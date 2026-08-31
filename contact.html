@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Regina Fröhlich - Contact</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800&family=Gabarito:wght@700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- Navigation -->
+<div class="top-left">
+<a href="index.html">&lt;</a>
+</div>
+
+
+<div class="contact-container">
+
+<!-- PHOTO FIRST -->
+<div class="contact-image">
+<img src="assets/images/contact/contact-photo.jpg" alt="Regina Fröhlich">
+</div>
+
+
+<!-- BIO -->
+<p class="contact-bio">
+painting is my way to process the world<br>
+with its high highs<br>
+low lows<br>
+and the beauty in between<br>
+taught me patience and curiosity<br>
+to integrate each facet of me<br>
+I'm forever exploring each form<br>
+its depth and movement<br>
+its sense and clarity throughout the chaos<br>
+where being and becoming<br>
+shape my view and work
+</p>
+
+<!-- RF -->
+<div class="contact-initials">— RF —</div>
+
+<!-- German Inquiry -->
+<p class="contact-inquiry contact-inquiry-german">
+<span class="german-line1">Für allgemeine Anfragen</span>
+<span class="german-line2">zu verfügbaren Kunstwerken und Auftragsarbeiten,</span>
+<br class="german-break">
+<span class="german-line3">hinterlasse mir gerne eine Nachricht./</span>
+</p>
+
+<!-- English Inquiry -->
+<p class="contact-inquiry contact-inquiry-english">
+<span class="line1">For general inquiries </span>
+<span class="line2">about available art pieces and commissions,</span>
+<br class="desktop-break">
+<span class="line3">feel free to message me.</span>
+</p>
+
+
+<!-- NEW TEXT -->
+<p class="contact-signature">- Regina Fröhlich -</p>
+
+
+<!-- Contact Links -->
+<div class="contact-details">
+
+<a href="mailto:info@reginafroehlich.com">
+info@reginafroehlich.com
+</a>
+
+<a href="https://wa.me/4917622598767" target="_blank">
+  WhatsApp +49&nbsp;176&nbsp;22598767
+</a>
+
+</div>
+
+
+<!-- Newsletter -->
+<div class="newsletter-inline">
+
+<div id="newsletter-text" class="newsletter-text">
+Subscribe to newsletter
+</div>
+
+<form id="newsletter-form" class="newsletter-form">
+
+<input type="email"
+id="email"
+placeholder="Enter Email"
+required>
+
+<button type="submit" id="newsletter-btn">
+send
+</button>
+
+</form>
+
+</div>
+
+
+<!-- Legal -->
+<div class="legal-links">
+    <a href="privacy.html">Privacy Policy</a> - <a href="imprint.html">Imprint</a>
+</div>
+
+</div>
+
+
+<script>
+document.getElementById("newsletter-form").addEventListener("submit", function(e) {
+e.preventDefault();
+
+const email = document.getElementById("email").value;
+const btn = document.getElementById("newsletter-btn");
+
+btn.disabled = true;
+btn.textContent = "Sending...";
+
+fetch("https://59abbc9a.sibforms.com/serve/MUIFANBQEiNQEIWx5vQuQkIX1TCgW0yxVgcA2ZspbICQVBh09uRbiz1WLzLC_JH1D6fTFIgYCxBhy6HKUzFRRZ3K82AwGvjhLVfgv4Hmh2f-WCpj_rbOcZN8UzakLZ0TKG_Cma1E6O86nvP-9MeoQr0jIC1giAmUdLoH4ggHvbdnUgf_ZXBIK0zbmUKsmtJOHs3nWl9rUN_lvgTpgA==", {
+method: "POST",
+headers: {
+"Content-Type": "application/x-www-form-urlencoded"
+},
+body: "EMAIL=" + encodeURIComponent(email) +
+"&email_address_check=" +
+"&locale=en"
+})
+.finally(() => {
+document.getElementById("newsletter-text").textContent = "Thanks for joining!";
+btn.textContent = "sent";
+btn.disabled = false;
+document.getElementById("newsletter-form").reset();
+});
+});
+</script>
+
+</body>
+</html>
