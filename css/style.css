@@ -1023,3 +1023,26 @@ object-fit:contain;
          
     }
 }
+
+/* Force line breaks for specific titles - STRONG OVERRIDE */
+.title-break br {
+    display: inline !important;
+}
+
+/* Desktop - show 3-line version, hide 2-line version */
+.desktop-break {
+    display: inline;
+}
+.mobile-break {
+    display: none;
+}
+
+/* Mobile - show 2-line version (break after Gedanken), hide 3-line version */
+@media (max-width: 768px) {
+    .desktop-break {
+        display: none;
+    }
+    .mobile-break {
+        display: block;
+    }
+}
