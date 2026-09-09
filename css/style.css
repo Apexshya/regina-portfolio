@@ -1046,3 +1046,8 @@ object-fit:contain;
         display: block;
     }
 }
+@media (max-width: 768px) {
+    .mobile-title-break {
+        display: inline !important;
+    }
+}
