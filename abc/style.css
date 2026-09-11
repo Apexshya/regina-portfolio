@@ -147,25 +147,6 @@ width:100%;
 object-fit:contain;
 }
 
-.top-right {
-        position: fixed !important;
-        top: 20px !important;
-        right: 30px !important;
-        left: auto !important;
-        width: auto !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        text-align: right !important;
-    }
-
-    .top-right a {
-        display: block !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        font-size: 11pt !important;
-        font-weight: 700 !important;
-    }
-
 }
 
 /* @media (max-width:768px){
@@ -265,31 +246,11 @@ object-fit:contain;
 }
 
 /* Contact button position */
-/*.top-right{
+.top-right{
     top:20px;
     right:20px;
     font-size:11pt;
-}*/
-
-
-.top-right {
-        position: fixed !important;
-        top: 20px !important;
-        right: 20px !important;
-        left: auto !important;
-        width: auto !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        text-align: right !important;
-    }
-
-    .top-right a {
-        display: block !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        font-size: 11pt !important;
-        font-weight: 700 !important;
-    }
+}
 
 }
 
