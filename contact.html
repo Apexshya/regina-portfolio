@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="css/style.css">
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Gabarito:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Gabarito:wght@300;400;500;700&display=swap" rel="stylesheet">
 
     <style>
         /* =====================================================
@@ -48,7 +48,7 @@
         }
 
         /* =====================================================
-           TOP RIGHT NAVIGATION - EXACTLY MATCHES HOMEPAGE
+           TOP RIGHT NAVIGATION
         ===================================================== */
 
         .top-right {
@@ -74,7 +74,6 @@
             opacity: 0.6;
         }
 
-        /* Mobile - matches homepage */
         @media (max-width: 1100px) {
             .top-right {
                 position: fixed !important;
@@ -101,7 +100,6 @@
                 top: 20px !important;
                 right: 20px !important;
             }
-            
         }
 
         /* =====================================================
@@ -113,13 +111,14 @@
         }
 
         /* =====================================================
-           MAIN CONTACT CONTAINER - DESKTOP
+           MAIN CONTACT CONTAINER
+           Aligned left to match homepage text position
         ===================================================== */
 
         .contact-container {
             position: absolute !important;
             top: 50% !important;
-            left: 95px !important;
+            left: 40px !important;
             transform: translateY(-50%) !important;
             width: max-content !important;
             max-width: none !important;
@@ -135,48 +134,46 @@
         }
 
         /* =====================================================
-           NAME - SMALLER, LESS THICK, FLUSH WITH TAGLINE
+           NAME + TAGLINE — FLUSH ON BOTH SIDES
         ===================================================== */
 
         .name-block {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 320px; /* adjust this to your desired width */
-    margin: 0 auto 0 0; /* left-aligned */
-}
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 300px;
+            margin: 0;
+        }
 
-.contact-name {
-    display: block;
-    width: 100%;
-    font-family: 'Playfair Display', serif !important;
-    font-weight: 600 !important;
-    font-style: normal !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.05em !important;
-    font-size: 20px !important;
-    line-height: 1.15 !important;
-    margin: 0 !important;
-    padding: 0 !important;
+        .contact-name {
+            display: block;
+            width: 100%;
+            font-family: 'Playfair Display', serif !important;
+            font-weight: 700 !important;
+            font-style: normal !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.03em !important;
+            font-size: 19px !important;
+            line-height: 1.15 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            color: var(--ink) !important;
+        }
 
-    color: var(--ink) !important;
-}
-
-.contact-tagline {
-    display: block;
-    width: 100%;
-    margin: 0.35em 0 0 0 !important;
-    padding: 0 !important;
-    font-family: 'Playfair Display', serif !important;
-    font-weight: 400 !important;
-    font-style: italic !important;
-    font-size: 18px !important;
-    line-height: 1.3 !important;
-    letter-spacing: normal !important;
-    color: var(--ink) !important;
-    display: flex;
-    justify-content: space-between;
-}
+        .contact-tagline {
+            display: flex !important;
+            justify-content: space-between !important;
+            width: 100% !important;
+            margin: 0.35em 0 0 0 !important;
+            padding: 0 !important;
+            font-family: 'Playfair Display', serif !important;
+            font-weight: 400 !important;
+            font-style: italic !important;
+            font-size: 17px !important;
+            line-height: 1.3 !important;
+            letter-spacing: normal !important;
+            color: var(--ink) !important;
+        }
 
         /* =====================================================
            GERMAN INQUIRY
@@ -184,7 +181,7 @@
 
         .contact-inquiry-german {
             display: block;
-            margin: 60px 0 10px 0 !important;
+            margin: 55px 0 10px 0 !important;
             padding: 0 !important;
             font-family: 'Gabarito', sans-serif !important;
             font-size: 16px !important;
@@ -211,7 +208,7 @@
         }
 
         /* =====================================================
-           EMAIL + WHATSAPP - LESS THICK
+           EMAIL + WHATSAPP
         ===================================================== */
 
         .contact-links {
@@ -219,7 +216,7 @@
             flex-direction: column !important;
             align-items: flex-start !important;
             gap: 3px !important;
-            margin: 0 0 60px 0 !important;
+            margin: 0 0 55px 0 !important;
             padding: 0 !important;
         }
 
@@ -230,7 +227,7 @@
             font-family: 'Gabarito', sans-serif !important;
             font-size: 16px !important;
             line-height: 1.5 !important;
-            font-weight: 500 !important;  /* ← LESS THICK (same as German inquiry) */
+            font-weight: 500 !important;
             color: var(--ink) !important;
             text-decoration: none !important;
             transition: opacity 0.2s ease;
@@ -277,23 +274,20 @@
         }
 
         /* =====================================================
-           TABLET / MINIMIZED DESKTOP
+           TABLET
         ===================================================== */
 
         @media (max-width: 900px) {
             .contact-container {
-                left: 50px !important;
-                top: 50% !important;
-                transform: translateY(-50%) !important;
+                left: 30px !important;
             }
 
             .contact-name {
-                font-size: 21px !important;
+                font-size: 18px !important;
             }
 
             .contact-tagline {
-                font-size: 17px !important;
-                letter-spacing: 0.7px !important;
+                font-size: 16px !important;
             }
 
             .contact-inquiry-german,
@@ -305,6 +299,8 @@
 
         /* =====================================================
            MOBILE
+           - More empty space above name (160px)
+           - Text size 16px to match homepage materials
         ===================================================== */
 
         @media (max-width: 768px) {
@@ -317,25 +313,30 @@
                 max-width: none !important;
                 min-height: 100svh !important;
                 margin: 0 !important;
-                padding: 130px 25px 50px 25px !important;  /* ← MORE SPACE ABOVE NAME */
+                padding: 160px 20px 50px 20px !important;   /* ← was 130px, now 160px */
                 display: flex !important;
                 align-items: flex-start !important;
                 justify-content: flex-start !important;
                 text-align: left !important;
             }
 
+            .name-block {
+                max-width: 280px;
+            }
+
             .contact-name {
-                font-size: 20px !important;
-                font-weight: 600 !important;
+                font-size: 19px !important;
+                font-weight: 700 !important;
+                letter-spacing: 0.03em !important;
             }
 
             .contact-tagline {
                 font-size: 17px !important;
-                letter-spacing: 0.3px !important;
+                letter-spacing: normal !important;
             }
 
             .contact-inquiry-german {
-                font-size: 15px !important;
+                font-size: 16px !important;      /* ← was 15px, now 16px */
                 line-height: 1.6 !important;
                 font-weight: 500 !important;
                 white-space: normal !important;
@@ -343,7 +344,7 @@
             }
 
             .contact-inquiry-english {
-                font-size: 15px !important;
+                font-size: 16px !important;      /* ← was 15px, now 16px */
                 line-height: 1.6 !important;
                 font-weight: 400 !important;
                 white-space: normal !important;
@@ -356,7 +357,7 @@
             }
 
             .contact-links a {
-                font-size: 15px !important;
+                font-size: 16px !important;      /* ← was 15px, now 16px */
                 font-weight: 500 !important;
             }
 
@@ -371,15 +372,25 @@
 
         @media (max-width: 380px) {
             .contact-container {
-                padding: 120px 20px 40px 20px !important;
+                padding: 150px 20px 40px 20px !important;   /* ← keep space above name */
             }
 
-           
+            .name-block {
+                max-width: 260px;
+            }
+
+            .contact-name {
+                font-size: 17px !important;
+            }
+
+            .contact-tagline {
+                font-size: 15px !important;
+            }
 
             .contact-inquiry-german,
             .contact-inquiry-english,
             .contact-links a {
-                font-size: 14px !important;
+                font-size: 15px !important;      /* ← was 14px, now 15px */
             }
 
             .legal-links {
@@ -391,18 +402,16 @@
 
 <body>
 
-    <!-- TOP RIGHT NAVIGATION -->
     <div class="top-right">
         <a href="index.html">work</a>
     </div>
 
-    <!-- CONTACT CONTENT -->
     <main class="contact-container">
 
-       <div class="name-block">
-    <h1 class="contact-name">REGINA FRÖHLICH</h1>
-    <p class="contact-tagline">Artist · Abstract Painting</p>
-</div>
+        <div class="name-block">
+            <h1 class="contact-name">REGINA FRÖHLICH</h1>
+            <p class="contact-tagline">Artist · Abstract Painting</p>
+        </div>
 
         <p class="contact-inquiry-german">
             Für Anfragen zu verfügbaren Arbeiten, Aufträgen oder Updates zu neuen Werken schreiben Sie mir gerne.

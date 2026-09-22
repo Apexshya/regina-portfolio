@@ -1397,3 +1397,446 @@
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+//this is new
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>REGINA FRÖHLICH - Contact</title>
+    <meta name="description" content="Original abstract paintings and mixed-media works">
+
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" sizes="512x512" href="assets/favicon/Favicon-512x512.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon/Favicon-512x512.png">
+    <link rel="apple-touch-icon" href="assets/favicon/Favicon-512x512.png">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' fill='%23ffffff'/></svg>">
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Gabarito:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* =====================================================
+           CONTACT PAGE
+        ===================================================== */
+
+        :root {
+            --ink: #000000;
+            --muted: #5e5e5e;
+            --bg: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100%;
+            margin: 0;
+            padding: 0;
+            background: var(--bg);
+            color: var(--ink);
+        }
+
+        body {
+            overflow-x: hidden;
+            font-family: 'Gabarito', sans-serif;
+        }
+
+        /* =====================================================
+           TOP RIGHT NAVIGATION - EXACTLY MATCHES HOMEPAGE
+        ===================================================== */
+
+        .top-right {
+            position: fixed;
+            top: 30px;
+            right: 40px;
+            z-index: 1000;
+            font-family: 'Gabarito', sans-serif;
+            font-weight: 700;
+            font-size: 12pt;
+        }
+
+        .top-right a {
+            text-decoration: none;
+            color: #000;
+            font-family: 'Gabarito', sans-serif;
+            font-weight: 700;
+            font-size: 12pt;
+            letter-spacing: 0.5px;
+        }
+
+        .top-right a:hover {
+            opacity: 0.6;
+        }
+
+        /* Mobile - matches homepage */
+        @media (max-width: 1100px) {
+            .top-right {
+                position: fixed !important;
+                top: 20px !important;
+                right: 30px !important;
+                left: auto !important;
+                width: auto !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                text-align: right !important;
+            }
+
+            .top-right a {
+                display: block !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                font-size: 11pt !important;
+                font-weight: 700 !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-right {
+                top: 20px !important;
+                right: 20px !important;
+            }
+            
+        }
+
+        /* =====================================================
+           HIDE OLD TOP LEFT
+        ===================================================== */
+
+        .top-left {
+            display: none !important;
+        }
+
+        /* =====================================================
+           MAIN CONTACT CONTAINER - DESKTOP
+        ===================================================== */
+
+        .contact-container {
+            position: absolute !important;
+            top: 50% !important;
+            left: 95px !important;
+            transform: translateY(-50%) !important;
+            width: max-content !important;
+            max-width: none !important;
+            min-height: 0 !important;
+            height: auto !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            justify-content: flex-start !important;
+            text-align: left !important;
+        }
+
+        /* =====================================================
+           NAME - SMALLER, LESS THICK, FLUSH WITH TAGLINE
+        ===================================================== */
+
+        .name-block {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 320px; /* adjust this to your desired width */
+    margin: 0 auto 0 0; /* left-aligned */
+}
+
+.contact-name {
+    display: block;
+    width: 100%;
+    font-family: 'Playfair Display', serif !important;
+    font-weight: 600 !important;
+    font-style: normal !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    font-size: 20px !important;
+    line-height: 1.15 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+
+    color: var(--ink) !important;
+}
+
+.contact-tagline {
+    display: block;
+    width: 100%;
+    margin: 0.35em 0 0 0 !important;
+    padding: 0 !important;
+    font-family: 'Playfair Display', serif !important;
+    font-weight: 400 !important;
+    font-style: italic !important;
+    font-size: 18px !important;
+    line-height: 1.3 !important;
+    letter-spacing: normal !important;
+    color: var(--ink) !important;
+    display: flex;
+    justify-content: space-between;
+}
+
+        /* =====================================================
+           GERMAN INQUIRY
+        ===================================================== */
+
+        .contact-inquiry-german {
+            display: block;
+            margin: 60px 0 10px 0 !important;
+            padding: 0 !important;
+            font-family: 'Gabarito', sans-serif !important;
+            font-size: 16px !important;
+            line-height: 1.6 !important;
+            font-weight: 500 !important;
+            color: var(--ink) !important;
+            white-space: nowrap;
+        }
+
+        /* =====================================================
+           ENGLISH INQUIRY
+        ===================================================== */
+
+        .contact-inquiry-english {
+            display: block;
+            margin: 0 0 40px 0 !important;
+            padding: 0 !important;
+            font-family: 'Gabarito', sans-serif !important;
+            font-size: 16px !important;
+            line-height: 1.6 !important;
+            font-weight: 400 !important;
+            color: var(--muted) !important;
+            white-space: nowrap;
+        }
+
+        /* =====================================================
+           EMAIL + WHATSAPP - LESS THICK
+        ===================================================== */
+
+        .contact-links {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 3px !important;
+            margin: 0 0 60px 0 !important;
+            padding: 0 !important;
+        }
+
+        .contact-links a {
+            display: block;
+            margin: 0 !important;
+            padding: 0 !important;
+            font-family: 'Gabarito', sans-serif !important;
+            font-size: 16px !important;
+            line-height: 1.5 !important;
+            font-weight: 500 !important;  /* ← LESS THICK (same as German inquiry) */
+            color: var(--ink) !important;
+            text-decoration: none !important;
+            transition: opacity 0.2s ease;
+        }
+
+        .contact-links a:hover {
+            opacity: 0.55;
+        }
+
+        /* =====================================================
+           LEGAL LINKS
+        ===================================================== */
+
+        .legal-links {
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            font-family: 'Gabarito', sans-serif !important;
+            font-size: 12px !important;
+            line-height: 1.3 !important;
+            font-weight: 700 !important;
+            color: #777777 !important;
+        }
+
+        .legal-links a {
+            margin: 0 !important;
+            padding: 0 !important;
+            color: #777777 !important;
+            text-decoration: none !important;
+            transition: opacity 0.2s ease;
+        }
+
+        .legal-links a:hover {
+            opacity: 0.55;
+        }
+
+        .legal-links span {
+            margin: 0 8px !important;
+            padding: 0 !important;
+            color: #777777 !important;
+        }
+
+        /* =====================================================
+           TABLET / MINIMIZED DESKTOP
+        ===================================================== */
+
+        @media (max-width: 900px) {
+            .contact-container {
+                left: 50px !important;
+                top: 50% !important;
+                transform: translateY(-50%) !important;
+            }
+
+            .contact-name {
+                font-size: 21px !important;
+            }
+
+            .contact-tagline {
+                font-size: 17px !important;
+                letter-spacing: 0.7px !important;
+            }
+
+            .contact-inquiry-german,
+            .contact-inquiry-english,
+            .contact-links a {
+                font-size: 15px !important;
+            }
+        }
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 768px) {
+            .contact-container {
+                position: relative !important;
+                top: auto !important;
+                left: auto !important;
+                transform: none !important;
+                width: 100% !important;
+                max-width: none !important;
+                min-height: 100svh !important;
+                margin: 0 !important;
+                padding: 130px 25px 50px 25px !important;  /* ← MORE SPACE ABOVE NAME */
+                display: flex !important;
+                align-items: flex-start !important;
+                justify-content: flex-start !important;
+                text-align: left !important;
+            }
+
+            .contact-name {
+                font-size: 20px !important;
+                font-weight: 600 !important;
+            }
+
+            .contact-tagline {
+                font-size: 17px !important;
+                letter-spacing: 0.3px !important;
+            }
+
+            .contact-inquiry-german {
+                font-size: 15px !important;
+                line-height: 1.6 !important;
+                font-weight: 500 !important;
+                white-space: normal !important;
+                margin: 3rem 0 12px 0 !important;
+            }
+
+            .contact-inquiry-english {
+                font-size: 15px !important;
+                line-height: 1.6 !important;
+                font-weight: 400 !important;
+                white-space: normal !important;
+                margin: 0 0 35px 0 !important;
+            }
+
+            .contact-links {
+                gap: 4px !important;
+                margin-bottom: 50px !important;
+            }
+
+            .contact-links a {
+                font-size: 15px !important;
+                font-weight: 500 !important;
+            }
+
+            .legal-links {
+                font-size: 11px !important;
+            }
+        }
+
+        /* =====================================================
+           SMALL PHONES
+        ===================================================== */
+
+        @media (max-width: 380px) {
+            .contact-container {
+                padding: 120px 20px 40px 20px !important;
+            }
+
+           
+
+            .contact-inquiry-german,
+            .contact-inquiry-english,
+            .contact-links a {
+                font-size: 14px !important;
+            }
+
+            .legal-links {
+                font-size: 10px !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- TOP RIGHT NAVIGATION -->
+    <div class="top-right">
+        <a href="index.html">work</a>
+    </div>
+
+    <!-- CONTACT CONTENT -->
+    <main class="contact-container">
+
+       <div class="name-block">
+    <h1 class="contact-name">REGINA FRÖHLICH</h1>
+    <p class="contact-tagline">Artist · Abstract Painting</p>
+</div>
+
+        <p class="contact-inquiry-german">
+            Für Anfragen zu verfügbaren Arbeiten, Aufträgen oder Updates zu neuen Werken schreiben Sie mir gerne.
+        </p>
+
+        <p class="contact-inquiry-english">
+            For inquiries about available art works, commissions, or updates on new art pieces, feel free to message me.
+        </p>
+
+        <div class="contact-links">
+            <a href="mailto:info@reginafroehlich.com">info@reginafroehlich.com</a>
+            <a href="https://wa.me/4917622598767" target="_blank" rel="noopener noreferrer">+49 176 22598767</a>
+        </div>
+
+        <div class="legal-links">
+            <a href="privacy.html">Privacy Policy</a>
+            <span>·</span>
+            <a href="imprint.html">Imprint</a>
+        </div>
+
+    </main>
+
+</body>
+</html>

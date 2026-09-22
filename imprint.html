@@ -6,7 +6,6 @@
 <title>REGINA FRÖHLICH - Imprint</title>
 <meta name="description" content="Imprint and legal information for Regina Fröhlich's artist portfolio website.">
 
-<!-- FAVICON -->
 <link rel="icon" type="image/png" sizes="512x512" href="assets/favicon/Favicon-512x512.png">
 <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon/Favicon-512x512.png">
 <link rel="apple-touch-icon" href="assets/favicon/Favicon-512x512.png">
@@ -31,14 +30,13 @@ body {
     color: #000;
 }
 
-/* Container - MATCHES MOBILE */
+/* SAME on desktop and mobile — LEFT ALIGNED */
 .container {
-    max-width: 700px;
-    margin: 50px auto 30px;
-    padding: 0 16px 60px;
+   
+    margin: 50px 40px 30px;   /* ← 40px left, matches homepage desktop */
+    padding: 0 0 60px;
 }
 
-/* Main Title */
 h1 {
     font-family: "Gabarito", sans-serif;
     font-weight: 700;
@@ -47,7 +45,6 @@ h1 {
     margin-bottom: 2px;
 }
 
-/* Subtitle */
 h5 {
     text-align: left;
     font-family: "Gabarito", sans-serif;
@@ -57,7 +54,6 @@ h5 {
     margin-bottom: 16px;
 }
 
-/* Section Titles */
 h2 {
     font-family: "Gabarito", sans-serif;
     font-weight: 700;
@@ -66,7 +62,6 @@ h2 {
     margin-bottom: 4px;
 }
 
-/* Paragraphs */
 p {
     font-family: "Gabarito", sans-serif;
     font-weight: 400;
@@ -75,7 +70,6 @@ p {
     margin-bottom: 8px;
 }
 
-/* Links */
 a {
     color: #000;
     text-decoration: none;
@@ -83,6 +77,13 @@ a {
 
 a:hover {
     opacity: 0.6;
+}
+
+/* On mobile, left padding reduces to 20px to match homepage */
+@media (max-width: 768px) {
+    .container {
+        margin: 50px 20px 30px;   /* ← matches homepage mobile (20px) */
+    }
 }
 </style>
 
