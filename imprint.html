@@ -30,9 +30,8 @@ body {
     color: #000;
 }
 
-/* SAME on desktop and mobile — LEFT ALIGNED */
+/* Container — LEFT ALIGNED, matches homepage */
 .container {
-   
     margin: 50px 40px 30px;   /* ← 40px left, matches homepage desktop */
     padding: 0 0 60px;
 }
@@ -79,10 +78,17 @@ a:hover {
     opacity: 0.6;
 }
 
-/* On mobile, left padding reduces to 20px to match homepage */
+/* Mobile — left padding 20px, justified text with hyphenation */
 @media (max-width: 768px) {
     .container {
         margin: 50px 20px 30px;   /* ← matches homepage mobile (20px) */
+    }
+    p {
+        text-align: justify;
+        text-justify: inter-word;
+        hyphens: auto;
+        -webkit-hyphens: auto;
+        -ms-hyphens: auto;
     }
 }
 </style>
@@ -115,7 +121,8 @@ a:hover {
 <p>Visual artist specializing in original abstract paintings and mixed-media works.</p>
 
 <h2>Copyright</h2>
-<p>All content published on this website, in particular images of artworks, photographs, and texts, is protected by copyright. All rights are held by Regina Fröhlich unless expressly stated otherwise.</p>
+<p>All content published on this website, in particular images of artworks, photographs, and texts, is protected by copyright.</p>
+<p>All rights are held by Regina Fröhlich unless expressly stated otherwise.</p>
 <p>Any reproduction, distribution, or other use beyond the limits permitted by copyright law requires prior written consent.</p>
 
 </div>
