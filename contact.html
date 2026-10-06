@@ -25,6 +25,7 @@
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Gabarito:wght@300;400;500;700&display=swap"
         rel="stylesheet">
 
+
     <style>
 
         /* =====================================================
@@ -61,6 +62,7 @@
 
         body {
             overflow-x: hidden;
+
             font-family: 'Gabarito', sans-serif;
         }
 
@@ -85,7 +87,9 @@
             width: auto !important;
 
             font-family: 'Gabarito', sans-serif;
+
             font-size: 12pt;
+
             font-weight: 700;
 
             line-height: 1;
@@ -101,7 +105,9 @@
             color: #000000;
 
             font-family: 'Gabarito', sans-serif;
+
             font-size: 12pt;
+
             font-weight: 700;
 
             line-height: 1;
@@ -128,6 +134,9 @@
 
         /* =====================================================
            CONTACT CONTAINER
+
+           The entire contact block stays anchored to the
+           bottom-left of the viewport.
         ===================================================== */
 
         .contact-container {
@@ -153,6 +162,7 @@
             flex-direction: column !important;
 
             align-items: flex-start !important;
+
             justify-content: flex-end !important;
 
             text-align: left !important;
@@ -181,6 +191,8 @@
 
         /* =====================================================
            NAME
+
+           REGINA FRÖHLICH
         ===================================================== */
 
         .contact-name {
@@ -194,9 +206,11 @@
             font-family: 'Playfair Display', serif !important;
 
             font-size: 22px !important;
+
             line-height: 1.15 !important;
 
             font-weight: 800 !important;
+
             font-style: normal !important;
 
             color: #222222 !important;
@@ -219,6 +233,8 @@
 
         /* =====================================================
            TAGLINE
+
+           Artist · Abstract Painting
         ===================================================== */
 
         .contact-tagline {
@@ -232,9 +248,11 @@
             font-family: 'Playfair Display', serif !important;
 
             font-size: 19px !important;
+
             line-height: 1.15 !important;
 
             font-weight: 400 !important;
+
             font-style: normal !important;
 
             color: #222222 !important;
@@ -250,15 +268,18 @@
         /* =====================================================
            INQUIRY TEXT
 
-           IMPORTANT:
+           DESKTOP / TABLET
 
-           Both German and English lines are kept on one line.
+           English is the fixed reference.
 
-           JavaScript below measures their natural widths and
-           horizontally scales the shorter line so BOTH lines
-           have exactly the same LEFT and RIGHT edge.
+           English stays completely natural.
 
-           The LEFT edge never moves.
+           German is horizontally scaled to match the English
+           width.
+
+           Both lines therefore have:
+             - the same left edge
+             - the same right edge
         ===================================================== */
 
         .contact-inquiry-german,
@@ -277,28 +298,50 @@
             letter-spacing: normal !important;
 
             white-space: nowrap !important;
-
-            transform-origin: left center !important;
-
-            transform: scaleX(var(--inquiry-scale, 1));
         }
 
 
+        /* =====================================================
+           GERMAN INQUIRY
+
+           ONLY THIS LINE IS SCALED.
+
+           English remains untouched.
+        ===================================================== */
+
         .contact-inquiry-german {
+
             margin: 55px 0 10px 0 !important;
+
+            padding: 0 !important;
 
             font-weight: 500 !important;
 
-            padding: 0 !important;
+            transform-origin: left center !important;
+
+            transform:
+                scaleX(var(--german-inquiry-scale, 1));
         }
 
 
+        /* =====================================================
+           ENGLISH INQUIRY
+
+           FIXED REFERENCE.
+
+           NO SCALE.
+           NO TRANSFORM.
+        ===================================================== */
+
         .contact-inquiry-english {
+
             margin: 0 0 40px 0 !important;
+
+            padding: 0 !important;
 
             font-weight: 300 !important;
 
-            padding: 0 !important;
+            transform: none !important;
         }
 
 
@@ -316,6 +359,7 @@
             gap: 3px !important;
 
             margin: 0 0 55px 0 !important;
+
             padding: 0 !important;
         }
 
@@ -361,6 +405,7 @@
             flex-direction: row !important;
 
             align-items: center !important;
+
             justify-content: flex-start !important;
 
             margin: 0 !important;
@@ -438,6 +483,7 @@
                 padding: 0 !important;
 
                 font-size: 11pt !important;
+
                 font-weight: 700 !important;
             }
         }
@@ -514,6 +560,7 @@
                 padding: 0 !important;
 
                 font-size: 11pt !important;
+
                 font-weight: 700 !important;
             }
 
@@ -526,9 +573,11 @@
                 position: fixed !important;
 
                 left: var(--page-margin) !important;
+
                 bottom: var(--page-margin) !important;
 
                 top: auto !important;
+
                 right: auto !important;
 
                 transform: none !important;
@@ -540,11 +589,13 @@
                 min-height: 0 !important;
 
                 margin: 0 !important;
+
                 padding: 0 !important;
 
                 display: flex !important;
 
                 align-items: flex-start !important;
+
                 justify-content: flex-end !important;
 
                 text-align: left !important;
@@ -633,10 +684,24 @@
 
 
             /* -------------------------------------------------
-               GERMAN INQUIRY
+               GERMAN INQUIRY — MOBILE
+
+               IMPORTANT:
+
+               Do NOT force this onto one line.
+
+               Do NOT horizontally scale it.
+
+               It wraps naturally inside the viewport.
             ------------------------------------------------- */
 
             .contact-inquiry-german {
+
+                display: block !important;
+
+                width: 100% !important;
+
+                max-width: 100% !important;
 
                 font-family: 'Gabarito', sans-serif !important;
 
@@ -648,19 +713,35 @@
 
                 color: #222222 !important;
 
-                white-space: nowrap !important;
+                letter-spacing: normal !important;
+
+                white-space: normal !important;
+
+                overflow-wrap: break-word !important;
+
+                word-break: normal !important;
 
                 margin: 3rem 0 12px 0 !important;
 
-                max-width: none !important;
+                padding: 0 !important;
+
+                transform: none !important;
             }
 
 
             /* -------------------------------------------------
-               ENGLISH INQUIRY
+               ENGLISH INQUIRY — MOBILE
+
+               English remains natural and wraps normally.
             ------------------------------------------------- */
 
             .contact-inquiry-english {
+
+                display: block !important;
+
+                width: 100% !important;
+
+                max-width: 100% !important;
 
                 font-family: 'Gabarito', sans-serif !important;
 
@@ -672,11 +753,19 @@
 
                 color: #222222 !important;
 
-                white-space: nowrap !important;
+                letter-spacing: normal !important;
+
+                white-space: normal !important;
+
+                overflow-wrap: break-word !important;
+
+                word-break: normal !important;
 
                 margin: 0 0 35px 0 !important;
 
-                max-width: none !important;
+                padding: 0 !important;
+
+                transform: none !important;
             }
 
 
@@ -816,7 +905,9 @@
             </a>
 
 
-            <a href="https://wa.me/4917622598767" target="_blank" rel="noopener noreferrer">
+            <a href="https://wa.me/4917622598767"
+                target="_blank"
+                rel="noopener noreferrer">
                 +49 176 22598767
             </a>
 
@@ -876,7 +967,7 @@
 
 
             /*
-             * Measure natural widths.
+             * Get natural widths.
              */
 
             const nameWidth =
@@ -886,6 +977,10 @@
                 tagline.getBoundingClientRect().width;
 
 
+            /*
+             * Safety check.
+             */
+
             if (!nameWidth || !taglineWidth) {
                 return;
             }
@@ -893,7 +988,7 @@
 
             /*
              * Scale REGINA FRÖHLICH so its right edge
-             * exactly matches the tagline right edge.
+             * matches the tagline right edge.
              */
 
             const scale =
@@ -909,16 +1004,18 @@
 
 
         /* =====================================================
-           EXACT GERMAN / ENGLISH INQUIRY ALIGNMENT
+           GERMAN / ENGLISH INQUIRY ALIGNMENT
 
-           Both inquiry sentences start at exactly the same
-           X position.
+           DESKTOP / TABLET:
 
-           The shorter sentence is horizontally scaled until
-           its RIGHT edge also reaches exactly the same X
-           position as the longer sentence.
+           English = fixed reference
+           German  = scaled to English width
 
-           The left edge never moves.
+           MOBILE:
+
+           German scaling is completely disabled.
+
+           Both sentences wrap naturally.
         ===================================================== */
 
         function alignInquiryText() {
@@ -939,17 +1036,33 @@
             }
 
 
-            /*
-             * Reset scaling before measuring.
-             */
+            /* =================================================
+               MOBILE
+
+               Do NOT scale German.
+
+               Both paragraphs need to wrap naturally.
+            ================================================= */
+
+            if (window.innerWidth <= 768) {
+
+                german.style.setProperty(
+                    '--german-inquiry-scale',
+                    '1'
+                );
+
+                return;
+            }
+
+
+            /* =================================================
+               DESKTOP / TABLET
+
+               Reset German before measuring.
+            ================================================= */
 
             german.style.setProperty(
-                '--inquiry-scale',
-                '1'
-            );
-
-            english.style.setProperty(
-                '--inquiry-scale',
+                '--german-inquiry-scale',
                 '1'
             );
 
@@ -975,50 +1088,32 @@
 
 
             /*
-             * Find the longest natural width.
-             */
+             * English is the fixed reference.
 
-            const targetWidth =
-                Math.max(
-                    germanWidth,
-                    englishWidth
-                );
-
-
-            /*
-             * Calculate the required horizontal
-             * scale for each sentence.
+             * Only German is adjusted.
              */
 
             const germanScale =
-                targetWidth / germanWidth;
-
-            const englishScale =
-                targetWidth / englishWidth;
+                englishWidth / germanWidth;
 
 
             /*
-             * Apply scaling.
+             * Apply scale ONLY to German.
 
-             * Because transform-origin is LEFT CENTER,
-             * the left edge remains fixed.
+             * The left edge stays fixed because
+             * transform-origin is left center.
              */
 
             german.style.setProperty(
-                '--inquiry-scale',
+                '--german-inquiry-scale',
                 germanScale
-            );
-
-            english.style.setProperty(
-                '--inquiry-scale',
-                englishScale
             );
         }
 
 
 
         /* =====================================================
-           INITIAL FONT-READY ALIGNMENT
+           ALIGN ALL CONTACT TEXT
         ===================================================== */
 
         function alignAllContactText() {
@@ -1029,9 +1124,10 @@
         }
 
 
-        /*
-         * Wait for Google Fonts.
-         */
+
+        /* =====================================================
+           WAIT FOR FONTS
+        ===================================================== */
 
         if (
             document.fonts &&
@@ -1055,10 +1151,7 @@
 
 
         /* =====================================================
-           RESIZE
-
-           Recalculate everything whenever the viewport
-           changes.
+           RECALCULATE ON RESIZE
         ===================================================== */
 
         window.addEventListener(
