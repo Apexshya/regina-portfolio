@@ -26,6 +26,7 @@
         rel="stylesheet">
 
     <style>
+
         /* =====================================================
            CONTACT PAGE
         ===================================================== */
@@ -47,6 +48,7 @@
             box-sizing: border-box;
         }
 
+
         html,
         body {
             width: 100%;
@@ -56,6 +58,7 @@
             color: var(--ink);
         }
 
+
         body {
             overflow-x: hidden;
             font-family: 'Gabarito', sans-serif;
@@ -64,7 +67,6 @@
 
         /* =====================================================
            WORK BUTTON
-           POSITION UNCHANGED
         ===================================================== */
 
         .top-right {
@@ -89,6 +91,7 @@
             line-height: 1;
         }
 
+
         .top-right a {
             display: block !important;
 
@@ -108,6 +111,7 @@
             text-decoration: none;
         }
 
+
         .top-right a:hover {
             opacity: 0.6;
         }
@@ -124,9 +128,6 @@
 
         /* =====================================================
            CONTACT CONTAINER
-
-           LEFT EDGE IS CONTROLLED ONLY BY --page-margin.
-           NOTHING BELOW CHANGES THIS POSITION.
         ===================================================== */
 
         .contact-container {
@@ -160,14 +161,6 @@
 
         /* =====================================================
            NAME BLOCK
-
-           IMPORTANT:
-
-           The block starts EXACTLY at the same left edge
-           as the rest of the contact content.
-
-           Its width is determined by the longer line:
-           "Artist · Abstract Painting"
         ===================================================== */
 
         .name-block {
@@ -187,16 +180,7 @@
 
 
         /* =====================================================
-           NAME LINE
-
-           REGINA FRÖHLICH
-
-           The JavaScript below calculates the exact width
-           of the tagline and scales this line horizontally
-           so that:
-
-           R  = exact same X as A
-           H  = exact same X as g
+           NAME
         ===================================================== */
 
         .contact-name {
@@ -227,10 +211,6 @@
 
             transform-origin: left center !important;
 
-            /*
-             * JavaScript changes this value.
-             * It starts at normal size.
-             */
             transform: scaleX(var(--name-scale, 1));
 
             margin-bottom: 5px !important;
@@ -239,13 +219,6 @@
 
         /* =====================================================
            TAGLINE
-
-           Artist · Abstract Painting
-
-           This is the reference line.
-
-           Its left edge is exactly the same as the
-           REGINA FRÖHLICH left edge.
         ===================================================== */
 
         .contact-tagline {
@@ -262,7 +235,7 @@
             line-height: 1.15 !important;
 
             font-weight: 400 !important;
-            font-style: italic !important;
+            font-style: normal !important;
 
             color: #222222 !important;
 
@@ -276,6 +249,16 @@
 
         /* =====================================================
            INQUIRY TEXT
+
+           IMPORTANT:
+
+           Both German and English lines are kept on one line.
+
+           JavaScript below measures their natural widths and
+           horizontally scales the shorter line so BOTH lines
+           have exactly the same LEFT and RIGHT edge.
+
+           The LEFT edge never moves.
         ===================================================== */
 
         .contact-inquiry-german,
@@ -289,31 +272,33 @@
 
             line-height: 1.5 !important;
 
-
-
             color: #222222 !important;
 
             letter-spacing: normal !important;
+
+            white-space: nowrap !important;
+
+            transform-origin: left center !important;
+
+            transform: scaleX(var(--inquiry-scale, 1));
         }
 
 
         .contact-inquiry-german {
             margin: 55px 0 10px 0 !important;
+
             font-weight: 500 !important;
 
             padding: 0 !important;
-
-            white-space: nowrap;
         }
 
 
         .contact-inquiry-english {
             margin: 0 0 40px 0 !important;
+
             font-weight: 300 !important;
 
             padding: 0 !important;
-
-            white-space: nowrap;
         }
 
 
@@ -478,9 +463,11 @@
                 font-size: 12pt !important;
             }
 
+
             .contact-inquiry-english {
                 font-size: 12pt !important;
             }
+
 
             .contact-links a {
                 font-size: 12pt !important;
@@ -627,7 +614,7 @@
 
                 font-weight: 400 !important;
 
-                font-style: italic !important;
+                font-style: normal !important;
 
                 line-height: 1.15 !important;
 
@@ -661,11 +648,11 @@
 
                 color: #222222 !important;
 
-                white-space: normal !important;
+                white-space: nowrap !important;
 
                 margin: 3rem 0 12px 0 !important;
 
-                max-width: calc(100vw - (var(--page-margin) * 2)) !important;
+                max-width: none !important;
             }
 
 
@@ -685,11 +672,11 @@
 
                 color: #222222 !important;
 
-                white-space: normal !important;
+                white-space: nowrap !important;
 
                 margin: 0 0 35px 0 !important;
 
-                max-width: calc(100vw - (var(--page-margin) * 2)) !important;
+                max-width: none !important;
             }
 
 
@@ -758,6 +745,7 @@
                 font-size: 7pt !important;
             }
         }
+
     </style>
 </head>
 
@@ -857,31 +845,20 @@
     </main>
 
 
-    <!-- =====================================================
-         EXACT H / G ALIGNMENT SCRIPT
-
-         This measures both lines after the fonts have loaded.
-
-         The tagline becomes the exact reference width.
-
-         REGINA FRÖHLICH is then horizontally scaled
-         from its LEFT edge until its RIGHT edge is
-         exactly the same X coordinate as the tagline.
-
-         Therefore:
-
-         R = A
-         H = g
-
-         without moving the entire block to the right.
-    ===================================================== -->
-
     <script>
+
+        /* =====================================================
+           EXACT NAME / TAGLINE ALIGNMENT
+        ===================================================== */
 
         function alignContactTitle() {
 
-            const name = document.querySelector('.contact-name');
-            const tagline = document.querySelector('.contact-tagline');
+            const name =
+                document.querySelector('.contact-name');
+
+            const tagline =
+                document.querySelector('.contact-tagline');
+
 
             if (!name || !tagline) {
                 return;
@@ -889,24 +866,25 @@
 
 
             /*
-             * Temporarily remove scaling so we can measure
-             * the real natural width of REGINA FRÖHLICH.
+             * Reset scaling before measuring.
              */
 
-            name.style.setProperty('--name-scale', '1');
+            name.style.setProperty(
+                '--name-scale',
+                '1'
+            );
 
 
             /*
-             * Get the natural rendered widths.
+             * Measure natural widths.
              */
 
-            const nameWidth = name.getBoundingClientRect().width;
-            const taglineWidth = tagline.getBoundingClientRect().width;
+            const nameWidth =
+                name.getBoundingClientRect().width;
 
+            const taglineWidth =
+                tagline.getBoundingClientRect().width;
 
-            /*
-             * Safety check.
-             */
 
             if (!nameWidth || !taglineWidth) {
                 return;
@@ -914,29 +892,13 @@
 
 
             /*
-             * Calculate exactly how much the name needs
-             * to be horizontally scaled.
-
-             * Example:
-             *
-             * name     = 185px
-             * tagline  = 235px
-             *
-             * scale    = 235 / 185
-             *          = 1.27027
+             * Scale REGINA FRÖHLICH so its right edge
+             * exactly matches the tagline right edge.
              */
 
-            const scale = taglineWidth / nameWidth;
+            const scale =
+                taglineWidth / nameWidth;
 
-
-            /*
-             * Apply the scale from the LEFT edge.
-
-             * This is the critical part.
-
-             * The R stays exactly where it was.
-             * Only the distance between R and H expands.
-             */
 
             name.style.setProperty(
                 '--name-scale',
@@ -945,54 +907,190 @@
         }
 
 
+
+        /* =====================================================
+           EXACT GERMAN / ENGLISH INQUIRY ALIGNMENT
+
+           Both inquiry sentences start at exactly the same
+           X position.
+
+           The shorter sentence is horizontally scaled until
+           its RIGHT edge also reaches exactly the same X
+           position as the longer sentence.
+
+           The left edge never moves.
+        ===================================================== */
+
+        function alignInquiryText() {
+
+            const german =
+                document.querySelector(
+                    '.contact-inquiry-german'
+                );
+
+            const english =
+                document.querySelector(
+                    '.contact-inquiry-english'
+                );
+
+
+            if (!german || !english) {
+                return;
+            }
+
+
+            /*
+             * Reset scaling before measuring.
+             */
+
+            german.style.setProperty(
+                '--inquiry-scale',
+                '1'
+            );
+
+            english.style.setProperty(
+                '--inquiry-scale',
+                '1'
+            );
+
+
+            /*
+             * Measure natural widths.
+             */
+
+            const germanWidth =
+                german.getBoundingClientRect().width;
+
+            const englishWidth =
+                english.getBoundingClientRect().width;
+
+
+            /*
+             * Safety check.
+             */
+
+            if (!germanWidth || !englishWidth) {
+                return;
+            }
+
+
+            /*
+             * Find the longest natural width.
+             */
+
+            const targetWidth =
+                Math.max(
+                    germanWidth,
+                    englishWidth
+                );
+
+
+            /*
+             * Calculate the required horizontal
+             * scale for each sentence.
+             */
+
+            const germanScale =
+                targetWidth / germanWidth;
+
+            const englishScale =
+                targetWidth / englishWidth;
+
+
+            /*
+             * Apply scaling.
+
+             * Because transform-origin is LEFT CENTER,
+             * the left edge remains fixed.
+             */
+
+            german.style.setProperty(
+                '--inquiry-scale',
+                germanScale
+            );
+
+            english.style.setProperty(
+                '--inquiry-scale',
+                englishScale
+            );
+        }
+
+
+
+        /* =====================================================
+           INITIAL FONT-READY ALIGNMENT
+        ===================================================== */
+
+        function alignAllContactText() {
+
+            alignContactTitle();
+
+            alignInquiryText();
+        }
+
+
         /*
-         * Wait until the Google fonts are actually loaded.
+         * Wait for Google Fonts.
          */
 
-        if (document.fonts && document.fonts.ready) {
+        if (
+            document.fonts &&
+            document.fonts.ready
+        ) {
 
             document.fonts.ready.then(function () {
-                alignContactTitle();
+
+                alignAllContactText();
+
             });
 
         } else {
 
             window.addEventListener(
                 'load',
-                alignContactTitle
+                alignAllContactText
             );
         }
 
 
-        /*
-         * Recalculate whenever the viewport changes.
 
-         * This keeps the alignment exact on:
-         * - desktop
-         * - tablet
-         * - mobile
-         * - device rotation
-         * - browser resizing
-         */
+        /* =====================================================
+           RESIZE
+
+           Recalculate everything whenever the viewport
+           changes.
+        ===================================================== */
 
         window.addEventListener(
             'resize',
-            alignContactTitle
+            function () {
+
+                alignContactTitle();
+
+                alignInquiryText();
+
+            }
         );
 
 
-        /*
-         * Run once after the page has fully loaded as
-         * an additional safety measure.
-         */
+
+        /* =====================================================
+           FINAL LOAD SAFETY CHECK
+        ===================================================== */
 
         window.addEventListener(
             'load',
             function () {
+
                 setTimeout(
-                    alignContactTitle,
+                    function () {
+
+                        alignAllContactText();
+
+                    },
                     100
                 );
+
             }
         );
 

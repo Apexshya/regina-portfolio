@@ -1007,3 +1007,1025 @@
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+final fixed contact page
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Regina Fröhlich | Visual Artist</title>
+    <meta name="description" content="Original abstract paintings and mixed-media works">
+
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" sizes="512x512" href="assets/favicon/Favicon-512x512.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon/Favicon-512x512.png">
+    <link rel="apple-touch-icon" href="assets/favicon/Favicon-512x512.png">
+
+    <!-- Fallback white SVG favicon -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' fill='%23ffffff'/></svg>">
+
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Gabarito:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* =====================================================
+           CONTACT PAGE
+        ===================================================== */
+
+        :root {
+            --ink: #222222;
+            --bg: #ffffff;
+            --page-margin: 40px;
+        }
+
+
+        /* =====================================================
+           GLOBAL
+        ===================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+
+            background: var(--bg);
+            color: var(--ink);
+        }
+
+        body {
+            overflow-x: hidden;
+            font-family: 'Gabarito', sans-serif;
+        }
+
+
+        /* =====================================================
+           WORK BUTTON
+           POSITION UNCHANGED
+        ===================================================== */
+
+        .top-right {
+            position: fixed !important;
+
+            top: 30px !important;
+            right: 40px !important;
+
+            left: auto !important;
+
+            z-index: 1000;
+
+            margin: 0 !important;
+            padding: 0 !important;
+
+            width: auto !important;
+
+            font-family: 'Gabarito', sans-serif;
+            font-size: 12pt;
+            font-weight: 700;
+
+            line-height: 1;
+        }
+
+        .top-right a {
+            display: block !important;
+
+            margin: 0 !important;
+            padding: 0 !important;
+
+            color: #000000;
+
+            font-family: 'Gabarito', sans-serif;
+            font-size: 12pt;
+            font-weight: 700;
+
+            line-height: 1;
+
+            letter-spacing: 0.5px;
+
+            text-decoration: none;
+        }
+
+        .top-right a:hover {
+            opacity: 0.6;
+        }
+
+
+        /* =====================================================
+           OLD TOP LEFT
+        ===================================================== */
+
+        .top-left {
+            display: none !important;
+        }
+
+
+        /* =====================================================
+           CONTACT CONTAINER
+
+           LEFT EDGE IS CONTROLLED ONLY BY --page-margin.
+           NOTHING BELOW CHANGES THIS POSITION.
+        ===================================================== */
+
+        .contact-container {
+            position: fixed !important;
+
+            left: var(--page-margin) !important;
+            bottom: var(--page-margin) !important;
+
+            top: auto !important;
+            right: auto !important;
+
+            transform: none !important;
+
+            width: calc(100vw - (var(--page-margin) * 2)) !important;
+
+            max-width: calc(100vw - (var(--page-margin) * 2)) !important;
+
+            margin: 0 !important;
+            padding: 0 !important;
+
+            display: flex !important;
+
+            flex-direction: column !important;
+
+            align-items: flex-start !important;
+            justify-content: flex-end !important;
+
+            text-align: left !important;
+        }
+
+
+        /* =====================================================
+           NAME BLOCK
+
+           IMPORTANT:
+
+           The block starts EXACTLY at the same left edge
+           as the rest of the contact content.
+
+           Its width is determined by the longer line:
+           "Artist · Abstract Painting"
+        ===================================================== */
+
+        .name-block {
+            display: block !important;
+
+            width: max-content !important;
+
+            max-width: 100% !important;
+
+            margin: 0 !important;
+            padding: 0 !important;
+
+            position: relative !important;
+
+            overflow: visible !important;
+        }
+
+
+        /* =====================================================
+           NAME LINE
+
+           REGINA FRÖHLICH
+
+           The JavaScript below calculates the exact width
+           of the tagline and scales this line horizontally
+           so that:
+
+           R  = exact same X as A
+           H  = exact same X as g
+        ===================================================== */
+
+        .contact-name {
+            display: block !important;
+
+            width: max-content !important;
+
+            margin: 0 !important;
+            padding: 0 !important;
+
+            font-family: 'Playfair Display', serif !important;
+
+            font-size: 22px !important;
+            line-height: 1.15 !important;
+
+            font-weight: 800 !important;
+            font-style: normal !important;
+
+            color: #222222 !important;
+
+            letter-spacing: normal !important;
+
+            text-transform: none !important;
+
+            white-space: nowrap !important;
+
+            text-align: left !important;
+
+            transform-origin: left center !important;
+
+            /*
+             * JavaScript changes this value.
+             * It starts at normal size.
+             */
+            transform: scaleX(var(--name-scale, 1));
+
+            margin-bottom: 5px !important;
+        }
+
+
+        /* =====================================================
+           TAGLINE
+
+           Artist · Abstract Painting
+
+           This is the reference line.
+
+           Its left edge is exactly the same as the
+           REGINA FRÖHLICH left edge.
+        ===================================================== */
+
+        .contact-tagline {
+            display: block !important;
+
+            width: max-content !important;
+
+            margin: 0 !important;
+            padding: 0 !important;
+
+            font-family: 'Playfair Display', serif !important;
+
+            font-size: 19px !important;
+            line-height: 1.15 !important;
+
+            font-weight: 400 !important;
+            font-style: normal !important;
+
+            color: #222222 !important;
+
+            letter-spacing: normal !important;
+
+            white-space: nowrap !important;
+
+            text-align: left !important;
+        }
+
+
+        /* =====================================================
+           INQUIRY TEXT
+        ===================================================== */
+
+        .contact-inquiry-german,
+        .contact-inquiry-english {
+
+            display: block;
+
+            font-family: 'Gabarito', sans-serif !important;
+
+            font-size: 12pt !important;
+
+            line-height: 1.5 !important;
+
+
+
+            color: #222222 !important;
+
+            letter-spacing: normal !important;
+        }
+
+
+        .contact-inquiry-german {
+            margin: 55px 0 10px 0 !important;
+            font-weight: 500 !important;
+
+            padding: 0 !important;
+
+            white-space: nowrap;
+        }
+
+
+        .contact-inquiry-english {
+            margin: 0 0 40px 0 !important;
+            font-weight: 300 !important;
+
+            padding: 0 !important;
+
+            white-space: nowrap;
+        }
+
+
+        /* =====================================================
+           EMAIL + PHONE
+        ===================================================== */
+
+        .contact-links {
+            display: flex !important;
+
+            flex-direction: column !important;
+
+            align-items: flex-start !important;
+
+            gap: 3px !important;
+
+            margin: 0 0 55px 0 !important;
+            padding: 0 !important;
+        }
+
+
+        .contact-links a {
+            display: block;
+
+            margin: 0 !important;
+            padding: 0 !important;
+
+            font-family: 'Gabarito', sans-serif !important;
+
+            font-size: 12pt !important;
+
+            line-height: 1.5 !important;
+
+            font-weight: 500 !important;
+
+            color: #222222 !important;
+
+            letter-spacing: normal !important;
+
+            text-decoration: none !important;
+
+            white-space: nowrap;
+
+            transition: opacity 0.2s ease;
+        }
+
+
+        .contact-links a:hover {
+            opacity: 0.55;
+        }
+
+
+        /* =====================================================
+           LEGAL LINKS
+        ===================================================== */
+
+        .legal-links {
+            display: flex !important;
+
+            flex-direction: row !important;
+
+            align-items: center !important;
+            justify-content: flex-start !important;
+
+            margin: 0 !important;
+            padding: 0 !important;
+
+            font-family: 'Gabarito', sans-serif !important;
+
+            font-size: 7pt !important;
+
+            line-height: 1.3 !important;
+
+            font-weight: 500 !important;
+
+            color: #777777 !important;
+        }
+
+
+        .legal-links a {
+            margin: 0 !important;
+            padding: 0 !important;
+
+            color: #777777 !important;
+
+            text-decoration: none !important;
+
+            transition: opacity 0.2s ease;
+        }
+
+
+        .legal-links a:hover {
+            opacity: 0.55;
+        }
+
+
+        .legal-links span {
+            margin: 0 8px !important;
+            padding: 0 !important;
+
+            color: #777777 !important;
+        }
+
+
+        /* =====================================================
+           TABLET
+        ===================================================== */
+
+        @media (max-width: 1100px) {
+
+            :root {
+                --page-margin: 30px;
+            }
+
+
+            .top-right {
+                position: fixed !important;
+
+                top: 20px !important;
+                right: 30px !important;
+
+                left: auto !important;
+
+                width: auto !important;
+
+                margin: 0 !important;
+                padding: 0 !important;
+
+                text-align: right !important;
+            }
+
+
+            .top-right a {
+                display: block !important;
+
+                margin: 0 !important;
+                padding: 0 !important;
+
+                font-size: 11pt !important;
+                font-weight: 700 !important;
+            }
+        }
+
+
+        /* =====================================================
+           TABLET TEXT
+        ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .contact-name {
+                font-size: 21px !important;
+            }
+
+
+            .contact-tagline {
+                font-size: 19px !important;
+            }
+
+
+            .contact-inquiry-german {
+                font-size: 12pt !important;
+            }
+
+            .contact-inquiry-english {
+                font-size: 12pt !important;
+            }
+
+            .contact-links a {
+                font-size: 12pt !important;
+            }
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 768px) {
+
+            :root {
+                --page-margin: 20px;
+            }
+
+
+            /* -------------------------------------------------
+               WORK BUTTON
+            ------------------------------------------------- */
+
+            .top-right {
+                position: fixed !important;
+
+                top: 20px !important;
+                right: 20px !important;
+
+                left: auto !important;
+
+                width: auto !important;
+
+                margin: 0 !important;
+                padding: 0 !important;
+
+                text-align: right !important;
+            }
+
+
+            .top-right a {
+                display: block !important;
+
+                margin: 0 !important;
+                padding: 0 !important;
+
+                font-size: 11pt !important;
+                font-weight: 700 !important;
+            }
+
+
+            /* -------------------------------------------------
+               CONTACT CONTAINER
+            ------------------------------------------------- */
+
+            .contact-container {
+                position: fixed !important;
+
+                left: var(--page-margin) !important;
+                bottom: var(--page-margin) !important;
+
+                top: auto !important;
+                right: auto !important;
+
+                transform: none !important;
+
+                width: calc(100vw - (var(--page-margin) * 2)) !important;
+
+                max-width: calc(100vw - (var(--page-margin) * 2)) !important;
+
+                min-height: 0 !important;
+
+                margin: 0 !important;
+                padding: 0 !important;
+
+                display: flex !important;
+
+                align-items: flex-start !important;
+                justify-content: flex-end !important;
+
+                text-align: left !important;
+            }
+
+
+            /* -------------------------------------------------
+               NAME BLOCK
+            ------------------------------------------------- */
+
+            .name-block {
+                width: max-content !important;
+
+                max-width: 100% !important;
+
+                align-items: flex-start !important;
+            }
+
+
+            /* -------------------------------------------------
+               NAME
+            ------------------------------------------------- */
+
+            .contact-name {
+                display: block !important;
+
+                width: max-content !important;
+
+                font-family: 'Playfair Display', serif !important;
+
+                font-size: 22px !important;
+
+                font-weight: 800 !important;
+
+                line-height: 1.15 !important;
+
+                letter-spacing: normal !important;
+
+                color: #222222 !important;
+
+                text-transform: none !important;
+
+                white-space: nowrap !important;
+
+                text-align: left !important;
+
+                transform-origin: left center !important;
+
+                transform: scaleX(var(--name-scale, 1));
+
+                margin-bottom: 5px !important;
+            }
+
+
+            /* -------------------------------------------------
+               TAGLINE
+            ------------------------------------------------- */
+
+            .contact-tagline {
+                display: block !important;
+
+                width: max-content !important;
+
+                font-family: 'Playfair Display', serif !important;
+
+                font-size: 19px !important;
+
+                font-weight: 400 !important;
+
+                font-style: normal !important;
+
+                line-height: 1.15 !important;
+
+                letter-spacing: normal !important;
+
+                color: #222222 !important;
+
+                margin: 0 !important;
+
+                padding: 0 !important;
+
+                white-space: nowrap !important;
+
+                text-align: left !important;
+            }
+
+
+            /* -------------------------------------------------
+               GERMAN INQUIRY
+            ------------------------------------------------- */
+
+            .contact-inquiry-german {
+
+                font-family: 'Gabarito', sans-serif !important;
+
+                font-size: 12pt !important;
+
+                line-height: 1.5 !important;
+
+                font-weight: 500 !important;
+
+                color: #222222 !important;
+
+                white-space: normal !important;
+
+                margin: 3rem 0 12px 0 !important;
+
+                max-width: calc(100vw - (var(--page-margin) * 2)) !important;
+            }
+
+
+            /* -------------------------------------------------
+               ENGLISH INQUIRY
+            ------------------------------------------------- */
+
+            .contact-inquiry-english {
+
+                font-family: 'Gabarito', sans-serif !important;
+
+                font-size: 12pt !important;
+
+                line-height: 1.5 !important;
+
+                font-weight: 300 !important;
+
+                color: #222222 !important;
+
+                white-space: normal !important;
+
+                margin: 0 0 35px 0 !important;
+
+                max-width: calc(100vw - (var(--page-margin) * 2)) !important;
+            }
+
+
+            /* -------------------------------------------------
+               EMAIL + PHONE
+            ------------------------------------------------- */
+
+            .contact-links {
+
+                gap: 4px !important;
+
+                margin-bottom: 50px !important;
+            }
+
+
+            .contact-links a {
+
+                font-family: 'Gabarito', sans-serif !important;
+
+                font-size: 12pt !important;
+
+                line-height: 1.5 !important;
+
+                font-weight: 500 !important;
+
+                color: #222222 !important;
+
+                white-space: nowrap !important;
+            }
+
+
+            /* -------------------------------------------------
+               LEGAL
+            ------------------------------------------------- */
+
+            .legal-links {
+                font-size: 7pt !important;
+            }
+        }
+
+
+        /* =====================================================
+           VERY SMALL PHONES
+        ===================================================== */
+
+        @media (max-width: 380px) {
+
+            .contact-name {
+                font-size: 21px !important;
+            }
+
+
+            .contact-tagline {
+                font-size: 21px !important;
+            }
+
+
+            .contact-inquiry-german,
+            .contact-inquiry-english,
+            .contact-links a {
+                font-size: 12pt !important;
+            }
+
+
+            .legal-links {
+                font-size: 7pt !important;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         WORK BUTTON
+    ===================================================== -->
+
+    <div class="top-right">
+        <a href="index.html">work</a>
+    </div>
+
+
+    <!-- =====================================================
+         CONTACT CONTENT
+    ===================================================== -->
+
+    <main class="contact-container">
+
+
+        <!-- =================================================
+             NAME + TAGLINE
+        ================================================= -->
+
+        <div class="name-block">
+
+            <h1 class="contact-name">
+                REGINA FRÖHLICH
+            </h1>
+
+
+            <p class="contact-tagline">
+                Artist · Abstract Painting
+            </p>
+
+        </div>
+
+
+        <!-- =================================================
+             GERMAN INQUIRY
+        ================================================= -->
+
+        <p class="contact-inquiry-german">
+            Für Anfragen zu verfügbaren Arbeiten, Aufträgen oder Updates zu neuen Werken schreiben Sie mir gerne.
+        </p>
+
+
+        <!-- =================================================
+             ENGLISH INQUIRY
+        ================================================= -->
+
+        <p class="contact-inquiry-english">
+            For inquiries about available art works, commissions, or updates on new art pieces, feel free to message me.
+        </p>
+
+
+        <!-- =================================================
+             EMAIL + PHONE
+        ================================================= -->
+
+        <div class="contact-links">
+
+            <a href="mailto:info@reginafroehlich.com">
+                info@reginafroehlich.com
+            </a>
+
+
+            <a href="https://wa.me/4917622598767" target="_blank" rel="noopener noreferrer">
+                +49 176 22598767
+            </a>
+
+        </div>
+
+
+        <!-- =================================================
+             LEGAL
+        ================================================= -->
+
+        <div class="legal-links">
+
+            <a href="privacy.html">
+                Privacy Policy
+            </a>
+
+            <span>·</span>
+
+            <a href="imprint.html">
+                Imprint
+            </a>
+
+        </div>
+
+
+    </main>
+
+
+    <!-- =====================================================
+         EXACT H / G ALIGNMENT SCRIPT
+
+         This measures both lines after the fonts have loaded.
+
+         The tagline becomes the exact reference width.
+
+         REGINA FRÖHLICH is then horizontally scaled
+         from its LEFT edge until its RIGHT edge is
+         exactly the same X coordinate as the tagline.
+
+         Therefore:
+
+         R = A
+         H = g
+
+         without moving the entire block to the right.
+    ===================================================== -->
+
+    <script>
+
+        function alignContactTitle() {
+
+            const name = document.querySelector('.contact-name');
+            const tagline = document.querySelector('.contact-tagline');
+
+            if (!name || !tagline) {
+                return;
+            }
+
+
+            /*
+             * Temporarily remove scaling so we can measure
+             * the real natural width of REGINA FRÖHLICH.
+             */
+
+            name.style.setProperty('--name-scale', '1');
+
+
+            /*
+             * Get the natural rendered widths.
+             */
+
+            const nameWidth = name.getBoundingClientRect().width;
+            const taglineWidth = tagline.getBoundingClientRect().width;
+
+
+            /*
+             * Safety check.
+             */
+
+            if (!nameWidth || !taglineWidth) {
+                return;
+            }
+
+
+            /*
+             * Calculate exactly how much the name needs
+             * to be horizontally scaled.
+
+             * Example:
+             *
+             * name     = 185px
+             * tagline  = 235px
+             *
+             * scale    = 235 / 185
+             *          = 1.27027
+             */
+
+            const scale = taglineWidth / nameWidth;
+
+
+            /*
+             * Apply the scale from the LEFT edge.
+
+             * This is the critical part.
+
+             * The R stays exactly where it was.
+             * Only the distance between R and H expands.
+             */
+
+            name.style.setProperty(
+                '--name-scale',
+                scale
+            );
+        }
+
+
+        /*
+         * Wait until the Google fonts are actually loaded.
+         */
+
+        if (document.fonts && document.fonts.ready) {
+
+            document.fonts.ready.then(function () {
+                alignContactTitle();
+            });
+
+        } else {
+
+            window.addEventListener(
+                'load',
+                alignContactTitle
+            );
+        }
+
+
+        /*
+         * Recalculate whenever the viewport changes.
+
+         * This keeps the alignment exact on:
+         * - desktop
+         * - tablet
+         * - mobile
+         * - device rotation
+         * - browser resizing
+         */
+
+        window.addEventListener(
+            'resize',
+            alignContactTitle
+        );
+
+
+        /*
+         * Run once after the page has fully loaded as
+         * an additional safety measure.
+         */
+
+        window.addEventListener(
+            'load',
+            function () {
+                setTimeout(
+                    alignContactTitle,
+                    100
+                );
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>
