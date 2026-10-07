@@ -25,7 +25,6 @@
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Gabarito:wght@300;400;500;700&display=swap"
         rel="stylesheet">
 
-
     <style>
 
         /* =====================================================
@@ -35,7 +34,15 @@
         :root {
             --ink: #222222;
             --bg: #ffffff;
+
+            /*
+             * Homepage relationship:
+             * Desktop homepage uses 10px bottom padding.
+             * The contact legal links therefore sit 10px
+             * above the bottom of the viewport.
+             */
             --page-margin: 40px;
+            --contact-bottom: 10px;
         }
 
 
@@ -135,15 +142,22 @@
         /* =====================================================
            CONTACT CONTAINER
 
-           The entire contact block stays anchored to the
-           bottom-left of the viewport.
+           IMPORTANT:
+           The bottom position is intentionally matched to
+           the homepage's bottom padding.
+
+           Homepage:
+               padding: 10px 0;
+
+           Therefore desktop:
+               bottom: 10px;
         ===================================================== */
 
         .contact-container {
             position: fixed !important;
 
             left: var(--page-margin) !important;
-            bottom: var(--page-margin) !important;
+            bottom: var(--contact-bottom) !important;
 
             top: auto !important;
             right: auto !important;
@@ -191,8 +205,6 @@
 
         /* =====================================================
            NAME
-
-           REGINA FRÖHLICH
         ===================================================== */
 
         .contact-name {
@@ -233,8 +245,6 @@
 
         /* =====================================================
            TAGLINE
-
-           Artist · Abstract Painting
         ===================================================== */
 
         .contact-tagline {
@@ -267,19 +277,6 @@
 
         /* =====================================================
            INQUIRY TEXT
-
-           DESKTOP / TABLET
-
-           English is the fixed reference.
-
-           English stays completely natural.
-
-           German is horizontally scaled to match the English
-           width.
-
-           Both lines therefore have:
-             - the same left edge
-             - the same right edge
         ===================================================== */
 
         .contact-inquiry-german,
@@ -303,10 +300,6 @@
 
         /* =====================================================
            GERMAN INQUIRY
-
-           ONLY THIS LINE IS SCALED.
-
-           English remains untouched.
         ===================================================== */
 
         .contact-inquiry-german {
@@ -326,11 +319,6 @@
 
         /* =====================================================
            ENGLISH INQUIRY
-
-           FIXED REFERENCE.
-
-           NO SCALE.
-           NO TRANSFORM.
         ===================================================== */
 
         .contact-inquiry-english {
@@ -456,6 +444,14 @@
 
             :root {
                 --page-margin: 30px;
+
+                /*
+                 * Homepage at this breakpoint:
+                 * padding: 40px 30px;
+                 *
+                 * Bottom = 40px
+                 */
+                --contact-bottom: 40px;
             }
 
 
@@ -529,6 +525,16 @@
 
             :root {
                 --page-margin: 20px;
+
+                /*
+                 * Homepage mobile:
+                 *
+                 * padding: 40px 20px 60px;
+                 *
+                 * Therefore the legal links use the same
+                 * 60px bottom relationship.
+                 */
+                --contact-bottom: 60px;
             }
 
 
@@ -574,7 +580,7 @@
 
                 left: var(--page-margin) !important;
 
-                bottom: var(--page-margin) !important;
+                bottom: var(--contact-bottom) !important;
 
                 top: auto !important;
 
@@ -685,14 +691,6 @@
 
             /* -------------------------------------------------
                GERMAN INQUIRY — MOBILE
-
-               IMPORTANT:
-
-               Do NOT force this onto one line.
-
-               Do NOT horizontally scale it.
-
-               It wraps naturally inside the viewport.
             ------------------------------------------------- */
 
             .contact-inquiry-german {
@@ -731,8 +729,6 @@
 
             /* -------------------------------------------------
                ENGLISH INQUIRY — MOBILE
-
-               English remains natural and wraps normally.
             ------------------------------------------------- */
 
             .contact-inquiry-english {
@@ -956,9 +952,7 @@
             }
 
 
-            /*
-             * Reset scaling before measuring.
-             */
+            /* Reset scaling before measuring */
 
             name.style.setProperty(
                 '--name-scale',
@@ -966,9 +960,7 @@
             );
 
 
-            /*
-             * Get natural widths.
-             */
+            /* Get natural widths */
 
             const nameWidth =
                 name.getBoundingClientRect().width;
@@ -977,19 +969,14 @@
                 tagline.getBoundingClientRect().width;
 
 
-            /*
-             * Safety check.
-             */
+            /* Safety check */
 
             if (!nameWidth || !taglineWidth) {
                 return;
             }
 
 
-            /*
-             * Scale REGINA FRÖHLICH so its right edge
-             * matches the tagline right edge.
-             */
+            /* Scale name to match tagline */
 
             const scale =
                 taglineWidth / nameWidth;
@@ -1005,17 +992,6 @@
 
         /* =====================================================
            GERMAN / ENGLISH INQUIRY ALIGNMENT
-
-           DESKTOP / TABLET:
-
-           English = fixed reference
-           German  = scaled to English width
-
-           MOBILE:
-
-           German scaling is completely disabled.
-
-           Both sentences wrap naturally.
         ===================================================== */
 
         function alignInquiryText() {
@@ -1038,10 +1014,6 @@
 
             /* =================================================
                MOBILE
-
-               Do NOT scale German.
-
-               Both paragraphs need to wrap naturally.
             ================================================= */
 
             if (window.innerWidth <= 768) {
@@ -1057,8 +1029,6 @@
 
             /* =================================================
                DESKTOP / TABLET
-
-               Reset German before measuring.
             ================================================= */
 
             german.style.setProperty(
@@ -1067,10 +1037,6 @@
             );
 
 
-            /*
-             * Measure natural widths.
-             */
-
             const germanWidth =
                 german.getBoundingClientRect().width;
 
@@ -1078,31 +1044,14 @@
                 english.getBoundingClientRect().width;
 
 
-            /*
-             * Safety check.
-             */
-
             if (!germanWidth || !englishWidth) {
                 return;
             }
 
 
-            /*
-             * English is the fixed reference.
-
-             * Only German is adjusted.
-             */
-
             const germanScale =
                 englishWidth / germanWidth;
 
-
-            /*
-             * Apply scale ONLY to German.
-
-             * The left edge stays fixed because
-             * transform-origin is left center.
-             */
 
             german.style.setProperty(
                 '--german-inquiry-scale',
