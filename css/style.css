@@ -53,7 +53,7 @@ body {
     display: block;
     height: 97vh;           
     width: 100%;
-    cursor: pointer;
+    /* cursor: pointer; */
     text-decoration: none;
     display: flex;
     justify-content: center;  
