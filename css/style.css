@@ -1090,3 +1090,19 @@ object-fit:contain;
         display: inline !important;
     }
 }
+
+
+/* =====================================================
+   MATERIALS LINE BREAK — force "on ..." onto new line
+   Only applies on very narrow screens (≤ 400px)
+===================================================== */
+
+.mobile-material-break {
+    display: none;   /* hidden on all screens by default */
+}
+
+@media (max-width: 420px) {
+    .mobile-material-break {
+        display: inline;   /* show only on narrow phones */
+    }
+}
