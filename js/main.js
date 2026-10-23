@@ -1459,31 +1459,41 @@ if ('scrollRestoration' in history) {
 }
 
 /* -----------------------------
+   SAVE SCROLL BEFORE LEAVING
+   (runs immediately, not on pageshow)
+----------------------------- */
+const contactLink = document.querySelector(".top-right a");
+
+if (contactLink) {
+    contactLink.addEventListener("click", () => {
+        sessionStorage.setItem("scrollY", window.scrollY);
+        sessionStorage.setItem("itemCount",
+            document.querySelector(".scroll-container").children.length
+        );
+    });
+}
+
+/* -----------------------------
    HIDE PAGE DURING RESTORE (prevents flicker)
 ----------------------------- */
 const savedScrollY = sessionStorage.getItem("scrollY");
 
 if (savedScrollY !== null) {
-    // Hide body instantly before first paint
     document.documentElement.style.visibility = "hidden";
 }
 
 /* -----------------------------
-   MAIN (WORKS WITH BACK BUTTON)
+   MAIN
 ----------------------------- */
 window.addEventListener("pageshow", function () {
 
     const container = document.querySelector(".scroll-container");
     if (!container) return;
 
-    const contactLink = document.querySelector(".top-right a");
     const originalItems = Array.from(container.children);
 
     let isAdding = false;
 
-    /* -----------------------------
-       APPEND MORE ITEMS (INFINITE)
-    ----------------------------- */
     function appendMore() {
         if (isAdding) return;
         isAdding = true;
@@ -1511,17 +1521,7 @@ window.addEventListener("pageshow", function () {
     }
 
     /* -----------------------------
-       SAVE EXACT SCROLL POSITION
-    ----------------------------- */
-    if (contactLink) {
-        contactLink.addEventListener("click", () => {
-            sessionStorage.setItem("scrollY", window.scrollY);
-            sessionStorage.setItem("itemCount", container.children.length);
-        });
-    }
-
-    /* -----------------------------
-       RESTORE EXACT SCROLL POSITION
+       RESTORE
     ----------------------------- */
     const savedCount = parseInt(sessionStorage.getItem("itemCount"));
 
@@ -1529,7 +1529,6 @@ window.addEventListener("pageshow", function () {
 
         const currentCount = container.children.length;
 
-        /* rebuild infinite scroll BEFORE restoring */
         if (savedCount > currentCount) {
             const setsNeeded = Math.ceil(
                 (savedCount - currentCount) / originalItems.length
@@ -1540,27 +1539,33 @@ window.addEventListener("pageshow", function () {
             }
         }
 
-        /* Restore position, then reveal page */
-        const restorePosition = () => {
-            window.scrollTo(0, parseInt(savedScrollY));
+        const targetY = parseInt(savedScrollY);
+
+        const tryRestore = () => {
+            window.scrollTo(0, targetY);
+
+            // Mobile Safari sometimes ignores scrollTo if layout isn't ready
+            // Double-check and retry if needed
+            if (Math.abs(window.scrollY - targetY) > 5) {
+                window.scrollTo(0, targetY);
+            }
         };
 
-        // Try multiple times as images/layout settle
-        setTimeout(restorePosition, 0);
-        setTimeout(restorePosition, 100);
-        setTimeout(restorePosition, 300);
+        // Aggressive retries for mobile
+        requestAnimationFrame(tryRestore);
+        setTimeout(tryRestore, 50);
+        setTimeout(tryRestore, 150);
+        setTimeout(tryRestore, 300);
+        setTimeout(tryRestore, 500);
 
-        // Reveal the page after the final attempt
         setTimeout(() => {
             document.documentElement.style.visibility = "visible";
-        }, 350);
+        }, 550);
 
-        /* cleanup */
         sessionStorage.removeItem("scrollY");
         sessionStorage.removeItem("itemCount");
 
     } else {
-        // No saved position — make sure page is visible
         document.documentElement.style.visibility = "visible";
     }
 
@@ -1571,7 +1576,6 @@ window.addEventListener("pageshow", function () {
 
     window.addEventListener("scroll", () => {
         if (ticking) return;
-
         ticking = true;
 
         requestAnimationFrame(() => {
