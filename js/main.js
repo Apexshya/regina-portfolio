@@ -1461,31 +1461,28 @@ if ("scrollRestoration" in history) {
     history.scrollRestoration = "manual";
 }
 
-(() => {
-    const container = document.querySelector(".scroll-container");
 
+(() => {
+    if ("scrollRestoration" in history) {
+        history.scrollRestoration = "manual";
+    }
+
+    const KEY_Y = "homepageScrollY";
+    const KEY_COUNT = "homepageItemCount";
+
+    const container = document.querySelector(".scroll-container");
     if (!container) return;
 
     const contactLink = document.querySelector(".top-right a");
     const originalItems = Array.from(container.children);
 
-    const SCROLL_KEY = "homepageScrollY";
-    const COUNT_KEY = "homepageItemCount";
-
-    let isAdding = false;
+    let adding = false;
     let ticking = false;
-    let restoring = false;
-
-    /* -------------------------------------
-       APPEND MORE ITEMS
-    ------------------------------------- */
 
     function appendMore() {
-        if (isAdding || originalItems.length === 0) return;
+        if (adding || !originalItems.length) return;
 
-        isAdding = true;
-
-        const fragment = document.createDocumentFragment();
+        adding = true;
 
         originalItems.forEach(item => {
             const clone = item.cloneNode(true);
@@ -1493,108 +1490,98 @@ if ("scrollRestoration" in history) {
             clone.querySelectorAll("img").forEach(img => {
                 img.classList.remove("loaded");
 
-                img.addEventListener("load", () => {
-                    img.classList.add("loaded");
-                }, { once: true });
-
-                img.addEventListener("error", () => {
-                    img.classList.add("loaded");
-                }, { once: true });
+                const markLoaded = () => img.classList.add("loaded");
 
                 if (img.complete) {
-                    img.classList.add("loaded");
+                    markLoaded();
+                } else {
+                    img.addEventListener("load", markLoaded, { once: true });
+                    img.addEventListener("error", markLoaded, { once: true });
                 }
             });
 
-            fragment.appendChild(clone);
+            container.appendChild(clone);
         });
 
-        container.appendChild(fragment);
-        isAdding = false;
+        adding = false;
     }
 
-    /* -------------------------------------
-       SAVE POSITION BEFORE CONTACT NAVIGATION
-    ------------------------------------- */
+    // Save continuously, not just when contact is clicked.
+    function savePosition() {
+        sessionStorage.setItem(KEY_Y, String(window.scrollY));
+        sessionStorage.setItem(KEY_COUNT, String(container.children.length));
+    }
+
+    window.addEventListener("scroll", savePosition, { passive: true });
 
     if (contactLink) {
-        contactLink.addEventListener("click", () => {
-            sessionStorage.setItem(
-                SCROLL_KEY,
-                String(window.scrollY)
-            );
-
-            sessionStorage.setItem(
-                COUNT_KEY,
-                String(container.children.length)
-            );
-        });
+        contactLink.addEventListener("click", savePosition);
     }
 
-    /* -------------------------------------
-       RESTORE EXACT POSITION
-    ------------------------------------- */
+    // Restore only when the browser actually loaded a new document.
+    // Do not fight the browser's own restoration of a cached page.
+    window.addEventListener("pageshow", function (event) {
+        if (event.persisted) return;
 
-    const savedY = sessionStorage.getItem(SCROLL_KEY);
-    const savedCount = Number(
-        sessionStorage.getItem(COUNT_KEY)
-    );
+        const rawY = sessionStorage.getItem(KEY_Y);
+        if (rawY === null) return;
 
-    if (savedY !== null) {
-        const targetY = Math.max(0, Number(savedY));
+        const targetY = Math.max(0, Number(rawY));
+        const savedCount = Number(sessionStorage.getItem(KEY_COUNT));
 
-        if (Number.isFinite(targetY)) {
-            restoring = true;
+        if (!Number.isFinite(targetY)) return;
 
-            // Rebuild enough content before scrolling.
-            if (
-                Number.isFinite(savedCount) &&
-                originalItems.length > 0
+        // Recreate the content that existed before leaving.
+        if (Number.isFinite(savedCount)) {
+            let safety = 0;
+
+            while (
+                container.children.length < savedCount &&
+                safety++ < 100
             ) {
-                while (container.children.length < savedCount) {
-                    const previousCount = container.children.length;
-                    appendMore();
+                const before = container.children.length;
+                appendMore();
 
-                    // Prevent an infinite loop if appending fails.
-                    if (container.children.length <= previousCount) break;
-                }
+                if (container.children.length === before) break;
             }
-
-            // Remove saved values only after reading them.
-            sessionStorage.removeItem(SCROLL_KEY);
-            sessionStorage.removeItem(COUNT_KEY);
-
-            // Restore immediately, without smooth scrolling.
-            window.scrollTo(0, targetY);
-
-            // Correct once the browser has performed layout.
-            requestAnimationFrame(() => {
-                window.scrollTo(0, targetY);
-
-                requestAnimationFrame(() => {
-                    restoring = false;
-                });
-            });
         }
-    }
 
-    /* -------------------------------------
-       INFINITE SCROLL
-    ------------------------------------- */
+        // Keep saved values until restoration has been attempted.
+        let attempts = 0;
 
+        function restore() {
+            window.scrollTo(0, targetY);
+            attempts++;
+
+            // Mobile browsers can update layout after the first paint.
+            if (
+                attempts < 8 &&
+                document.documentElement.scrollHeight <
+                    targetY + window.innerHeight
+            ) {
+                requestAnimationFrame(restore);
+            }
+        }
+
+        requestAnimationFrame(() => {
+            requestAnimationFrame(restore);
+        });
+
+        sessionStorage.removeItem(KEY_Y);
+        sessionStorage.removeItem(KEY_COUNT);
+    });
+
+    // Infinite scrolling.
     window.addEventListener("scroll", () => {
-        if (ticking || restoring) return;
+        if (ticking) return;
 
         ticking = true;
 
         requestAnimationFrame(() => {
-            const scrollBottom =
-                window.scrollY + window.innerHeight;
-
-            const pageHeight =
-                document.documentElement.scrollHeight;
-
-            if (scrollBottom > pageHeight - 1200) {
+            if (
+                window.scrollY + window.innerHeight >
+                document.documentElement.scrollHeight - 1200
+            ) {
                 appendMore();
             }
 
@@ -1602,25 +1589,19 @@ if ("scrollRestoration" in history) {
         });
     }, { passive: true });
 
-    /* -------------------------------------
-       IMAGE FADE-IN
-    ------------------------------------- */
-
-    function prepareImages() {
-        container.querySelectorAll("img").forEach(img => {
-            if (img.complete) {
+    // Initial image fade-in.
+    container.querySelectorAll("img").forEach(img => {
+        if (img.complete) {
+            img.classList.add("loaded");
+        } else {
+            img.addEventListener("load", () => {
                 img.classList.add("loaded");
-            } else {
-                img.addEventListener("load", () => {
-                    img.classList.add("loaded");
-                }, { once: true });
+            }, { once: true });
 
-                img.addEventListener("error", () => {
-                    img.classList.add("loaded");
-                }, { once: true });
-            }
-        });
-    }
-
-    prepareImages();
+            img.addEventListener("error", () => {
+                img.classList.add("loaded");
+            }, { once: true });
+        }
+    });
 })();
+
