@@ -1462,27 +1462,60 @@ if ("scrollRestoration" in history) {
 }
 
 
+
+/* =========================================
+   HOMEPAGE SCROLL RESTORATION
+   Desktop + Mobile
+========================================= */
+
 (() => {
     if ("scrollRestoration" in history) {
         history.scrollRestoration = "manual";
     }
 
-    const KEY_Y = "homepageScrollY";
-    const KEY_COUNT = "homepageItemCount";
-
     const container = document.querySelector(".scroll-container");
     if (!container) return;
 
     const contactLink = document.querySelector(".top-right a");
+
+    const Y_KEY = "homepage_saved_y";
+    const COUNT_KEY = "homepage_saved_count";
+
     const originalItems = Array.from(container.children);
 
     let adding = false;
     let ticking = false;
+    let restoring = false;
+
+    /* -------------------------------------
+       SAVE SCROLL POSITION
+    ------------------------------------- */
+
+    function savePosition() {
+        sessionStorage.setItem(Y_KEY, String(window.scrollY));
+        sessionStorage.setItem(
+            COUNT_KEY,
+            String(container.children.length)
+        );
+    }
+
+    if (contactLink) {
+        contactLink.addEventListener("click", savePosition);
+    }
+
+    // Save again immediately before leaving the homepage.
+    window.addEventListener("pagehide", savePosition);
+
+    /* -------------------------------------
+       INFINITE SCROLL
+    ------------------------------------- */
 
     function appendMore() {
-        if (adding || !originalItems.length) return;
+        if (adding || originalItems.length === 0) return;
 
         adding = true;
+
+        const fragment = document.createDocumentFragment();
 
         originalItems.forEach(item => {
             const clone = item.cloneNode(true);
@@ -1495,93 +1528,89 @@ if ("scrollRestoration" in history) {
                 if (img.complete) {
                     markLoaded();
                 } else {
-                    img.addEventListener("load", markLoaded, { once: true });
-                    img.addEventListener("error", markLoaded, { once: true });
+                    img.addEventListener("load", markLoaded, {
+                        once: true
+                    });
+
+                    img.addEventListener("error", markLoaded, {
+                        once: true
+                    });
                 }
             });
 
-            container.appendChild(clone);
+            fragment.appendChild(clone);
         });
 
+        container.appendChild(fragment);
         adding = false;
     }
 
-    // Save continuously, not just when contact is clicked.
-    function savePosition() {
-        sessionStorage.setItem(KEY_Y, String(window.scrollY));
-        sessionStorage.setItem(KEY_COUNT, String(container.children.length));
-    }
+    /* -------------------------------------
+       RESTORE SCROLL POSITION
+    ------------------------------------- */
 
-    window.addEventListener("scroll", savePosition, { passive: true });
-
-    if (contactLink) {
-        contactLink.addEventListener("click", savePosition);
-    }
-
-    // Restore only when the browser actually loaded a new document.
-    // Do not fight the browser's own restoration of a cached page.
-    window.addEventListener("pageshow", function (event) {
-        if (event.persisted) return;
-
-        const rawY = sessionStorage.getItem(KEY_Y);
+    function restorePosition() {
+        const rawY = sessionStorage.getItem(Y_KEY);
         if (rawY === null) return;
 
-        const targetY = Math.max(0, Number(rawY));
-        const savedCount = Number(sessionStorage.getItem(KEY_COUNT));
+        const targetY = Number(rawY);
+        const savedCount = Number(sessionStorage.getItem(COUNT_KEY));
 
         if (!Number.isFinite(targetY)) return;
 
-        // Recreate the content that existed before leaving.
+        restoring = true;
+
+        // Rebuild enough items to reach the previous position.
         if (Number.isFinite(savedCount)) {
             let safety = 0;
 
             while (
                 container.children.length < savedCount &&
-                safety++ < 100
+                safety < 100
             ) {
                 const before = container.children.length;
                 appendMore();
+                safety++;
 
                 if (container.children.length === before) break;
             }
         }
 
-        // Keep saved values until restoration has been attempted.
         let attempts = 0;
 
-        function restore() {
+        function applyPosition() {
             window.scrollTo(0, targetY);
             attempts++;
 
-            // Mobile browsers can update layout after the first paint.
-            if (
-                attempts < 8 &&
-                document.documentElement.scrollHeight <
-                    targetY + window.innerHeight
-            ) {
-                requestAnimationFrame(restore);
+            // Keep correcting while mobile layout settles.
+            if (attempts < 12) {
+                requestAnimationFrame(applyPosition);
+            } else {
+                restoring = false;
             }
         }
 
         requestAnimationFrame(() => {
-            requestAnimationFrame(restore);
+            requestAnimationFrame(applyPosition);
         });
+    }
 
-        sessionStorage.removeItem(KEY_Y);
-        sessionStorage.removeItem(KEY_COUNT);
-    });
+    window.addEventListener("pageshow", restorePosition);
 
-    // Infinite scrolling.
+    /* -------------------------------------
+       INFINITE SCROLL LISTENER
+    ------------------------------------- */
+
     window.addEventListener("scroll", () => {
-        if (ticking) return;
+        if (ticking || restoring) return;
 
         ticking = true;
 
         requestAnimationFrame(() => {
-            if (
-                window.scrollY + window.innerHeight >
-                document.documentElement.scrollHeight - 1200
-            ) {
+            const bottom = window.scrollY + window.innerHeight;
+            const height = document.documentElement.scrollHeight;
+
+            if (bottom > height - 1200) {
                 appendMore();
             }
 
@@ -1589,19 +1618,25 @@ if ("scrollRestoration" in history) {
         });
     }, { passive: true });
 
-    // Initial image fade-in.
-    container.querySelectorAll("img").forEach(img => {
-        if (img.complete) {
-            img.classList.add("loaded");
-        } else {
-            img.addEventListener("load", () => {
-                img.classList.add("loaded");
-            }, { once: true });
+    /* -------------------------------------
+       IMAGE FADE-IN
+    ------------------------------------- */
 
-            img.addEventListener("error", () => {
+    function prepareImages() {
+        container.querySelectorAll("img").forEach(img => {
+            if (img.complete) {
                 img.classList.add("loaded");
-            }, { once: true });
-        }
-    });
+            } else {
+                img.addEventListener("load", () => {
+                    img.classList.add("loaded");
+                }, { once: true });
+
+                img.addEventListener("error", () => {
+                    img.classList.add("loaded");
+                }, { once: true });
+            }
+        });
+    }
+
+    prepareImages();
 })();
-
