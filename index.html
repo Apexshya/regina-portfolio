@@ -25,8 +25,13 @@
 <!-- Google Fonts (since they are free) -->
 <!-- <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800&family=Gabarito:wght@700&display=swap" rel="stylesheet"> -->
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Gabarito:wght@300;400;500;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/> 
-<script>
+<!-- <script>
     history.scrollRestoration = "manual";
+</script> -->
+<script>
+    if ("scrollRestoration" in history) {
+        history.scrollRestoration = "manual";
+    }
 </script>
 </head>
 <body>

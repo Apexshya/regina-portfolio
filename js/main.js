@@ -1451,137 +1451,148 @@
 // });
 
 
-/* -----------------------------
-   FORCE MANUAL SCROLL RESTORE
------------------------------ */
-if ('scrollRestoration' in history) {
+
+/* =========================================
+   STABLE SCROLL RESTORATION
+   Homepage <-> Contact page
+========================================= */
+
+if ("scrollRestoration" in history) {
     history.scrollRestoration = "manual";
 }
 
-/* -----------------------------
-   SAVE SCROLL BEFORE LEAVING
-   (runs immediately, not on pageshow)
------------------------------ */
-const contactLink = document.querySelector(".top-right a");
-
-if (contactLink) {
-    contactLink.addEventListener("click", () => {
-        sessionStorage.setItem("scrollY", window.scrollY);
-        sessionStorage.setItem("itemCount",
-            document.querySelector(".scroll-container").children.length
-        );
-    });
-}
-
-/* -----------------------------
-   HIDE PAGE DURING RESTORE (prevents flicker)
------------------------------ */
-const savedScrollY = sessionStorage.getItem("scrollY");
-
-if (savedScrollY !== null) {
-    document.documentElement.style.visibility = "hidden";
-}
-
-/* -----------------------------
-   MAIN
------------------------------ */
-window.addEventListener("pageshow", function () {
-
+(() => {
     const container = document.querySelector(".scroll-container");
+
     if (!container) return;
 
+    const contactLink = document.querySelector(".top-right a");
     const originalItems = Array.from(container.children);
 
+    const SCROLL_KEY = "homepageScrollY";
+    const COUNT_KEY = "homepageItemCount";
+
     let isAdding = false;
+    let ticking = false;
+    let restoring = false;
+
+    /* -------------------------------------
+       APPEND MORE ITEMS
+    ------------------------------------- */
 
     function appendMore() {
-        if (isAdding) return;
+        if (isAdding || originalItems.length === 0) return;
+
         isAdding = true;
+
+        const fragment = document.createDocumentFragment();
 
         originalItems.forEach(item => {
             const clone = item.cloneNode(true);
 
-            const img = clone.querySelector("img");
-            if (img) {
+            clone.querySelectorAll("img").forEach(img => {
                 img.classList.remove("loaded");
+
+                img.addEventListener("load", () => {
+                    img.classList.add("loaded");
+                }, { once: true });
+
+                img.addEventListener("error", () => {
+                    img.classList.add("loaded");
+                }, { once: true });
 
                 if (img.complete) {
                     img.classList.add("loaded");
-                } else {
-                    img.addEventListener("load", () => {
-                        img.classList.add("loaded");
-                    });
                 }
-            }
+            });
 
-            container.appendChild(clone);
+            fragment.appendChild(clone);
         });
 
+        container.appendChild(fragment);
         isAdding = false;
     }
 
-    /* -----------------------------
-       RESTORE
-    ----------------------------- */
-    const savedCount = parseInt(sessionStorage.getItem("itemCount"));
+    /* -------------------------------------
+       SAVE POSITION BEFORE CONTACT NAVIGATION
+    ------------------------------------- */
 
-    if (savedScrollY !== null) {
-
-        const currentCount = container.children.length;
-
-        if (savedCount > currentCount) {
-            const setsNeeded = Math.ceil(
-                (savedCount - currentCount) / originalItems.length
+    if (contactLink) {
+        contactLink.addEventListener("click", () => {
+            sessionStorage.setItem(
+                SCROLL_KEY,
+                String(window.scrollY)
             );
 
-            for (let i = 0; i < setsNeeded; i++) {
-                appendMore();
-            }
-        }
-
-        const targetY = parseInt(savedScrollY);
-
-        const tryRestore = () => {
-            window.scrollTo(0, targetY);
-
-            // Mobile Safari sometimes ignores scrollTo if layout isn't ready
-            // Double-check and retry if needed
-            if (Math.abs(window.scrollY - targetY) > 5) {
-                window.scrollTo(0, targetY);
-            }
-        };
-
-        // Aggressive retries for mobile
-        requestAnimationFrame(tryRestore);
-        setTimeout(tryRestore, 50);
-        setTimeout(tryRestore, 150);
-        setTimeout(tryRestore, 300);
-        setTimeout(tryRestore, 500);
-
-        setTimeout(() => {
-            document.documentElement.style.visibility = "visible";
-        }, 550);
-
-        sessionStorage.removeItem("scrollY");
-        sessionStorage.removeItem("itemCount");
-
-    } else {
-        document.documentElement.style.visibility = "visible";
+            sessionStorage.setItem(
+                COUNT_KEY,
+                String(container.children.length)
+            );
+        });
     }
 
-    /* -----------------------------
+    /* -------------------------------------
+       RESTORE EXACT POSITION
+    ------------------------------------- */
+
+    const savedY = sessionStorage.getItem(SCROLL_KEY);
+    const savedCount = Number(
+        sessionStorage.getItem(COUNT_KEY)
+    );
+
+    if (savedY !== null) {
+        const targetY = Math.max(0, Number(savedY));
+
+        if (Number.isFinite(targetY)) {
+            restoring = true;
+
+            // Rebuild enough content before scrolling.
+            if (
+                Number.isFinite(savedCount) &&
+                originalItems.length > 0
+            ) {
+                while (container.children.length < savedCount) {
+                    const previousCount = container.children.length;
+                    appendMore();
+
+                    // Prevent an infinite loop if appending fails.
+                    if (container.children.length <= previousCount) break;
+                }
+            }
+
+            // Remove saved values only after reading them.
+            sessionStorage.removeItem(SCROLL_KEY);
+            sessionStorage.removeItem(COUNT_KEY);
+
+            // Restore immediately, without smooth scrolling.
+            window.scrollTo(0, targetY);
+
+            // Correct once the browser has performed layout.
+            requestAnimationFrame(() => {
+                window.scrollTo(0, targetY);
+
+                requestAnimationFrame(() => {
+                    restoring = false;
+                });
+            });
+        }
+    }
+
+    /* -------------------------------------
        INFINITE SCROLL
-    ----------------------------- */
-    let ticking = false;
+    ------------------------------------- */
 
     window.addEventListener("scroll", () => {
-        if (ticking) return;
+        if (ticking || restoring) return;
+
         ticking = true;
 
         requestAnimationFrame(() => {
+            const scrollBottom =
+                window.scrollY + window.innerHeight;
 
-            const scrollBottom = window.scrollY + window.innerHeight;
-            const pageHeight = document.documentElement.scrollHeight;
+            const pageHeight =
+                document.documentElement.scrollHeight;
 
             if (scrollBottom > pageHeight - 1200) {
                 appendMore();
@@ -1589,21 +1600,27 @@ window.addEventListener("pageshow", function () {
 
             ticking = false;
         });
-    });
+    }, { passive: true });
 
-    /* -----------------------------
+    /* -------------------------------------
        IMAGE FADE-IN
-    ----------------------------- */
-    document.querySelectorAll(".scroll-item img").forEach(img => {
+    ------------------------------------- */
 
-        if (img.complete) {
-            img.classList.add("loaded");
-        } else {
-            img.addEventListener("load", () => {
+    function prepareImages() {
+        container.querySelectorAll("img").forEach(img => {
+            if (img.complete) {
                 img.classList.add("loaded");
-            });
-        }
+            } else {
+                img.addEventListener("load", () => {
+                    img.classList.add("loaded");
+                }, { once: true });
 
-    });
+                img.addEventListener("error", () => {
+                    img.classList.add("loaded");
+                }, { once: true });
+            }
+        });
+    }
 
-});
+    prepareImages();
+})();
