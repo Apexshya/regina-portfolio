@@ -1314,12 +1314,158 @@
 
 
 
+//new 24 will have to update for mobile
+// /* -----------------------------
+//    FORCE MANUAL SCROLL RESTORE
+// ----------------------------- */
+// if ('scrollRestoration' in history) {
+//     history.scrollRestoration = "manual";
+// }
+
+// /* -----------------------------
+//    MAIN (WORKS WITH BACK BUTTON)
+// ----------------------------- */
+// window.addEventListener("pageshow", function () {
+
+//     const container = document.querySelector(".scroll-container");
+//     if (!container) return;
+
+//     const contactLink = document.querySelector(".top-right a");
+//     const originalItems = Array.from(container.children);
+
+//     let isAdding = false;
+
+//     /* -----------------------------
+//        APPEND MORE ITEMS (INFINITE)
+//     ----------------------------- */
+//     function appendMore() {
+//         if (isAdding) return;
+//         isAdding = true;
+
+//         originalItems.forEach(item => {
+//             const clone = item.cloneNode(true);
+
+//             const img = clone.querySelector("img");
+//             if (img) {
+//                 img.classList.remove("loaded");
+
+//                 if (img.complete) {
+//                     img.classList.add("loaded");
+//                 } else {
+//                     img.addEventListener("load", () => {
+//                         img.classList.add("loaded");
+//                     });
+//                 }
+//             }
+
+//             container.appendChild(clone);
+//         });
+
+//         isAdding = false;
+//     }
+
+//    /* -----------------------------
+//    SAVE EXACT SCROLL POSITION
+// ----------------------------- */
+// if (contactLink) {
+//     contactLink.addEventListener("click", () => {
+
+//         sessionStorage.setItem("scrollY", window.scrollY);
+//         sessionStorage.setItem("itemCount", container.children.length);
+
+//     });
+// }
+
+//     /* -----------------------------
+//    RESTORE EXACT SCROLL POSITION
+// ----------------------------- */
+// const savedScrollY = sessionStorage.getItem("scrollY");
+// const savedCount = parseInt(sessionStorage.getItem("itemCount"));
+
+// if (savedScrollY !== null) {
+
+//     const currentCount = container.children.length;
+
+//     /* rebuild infinite scroll BEFORE restoring */
+//     if (savedCount > currentCount) {
+//         const setsNeeded = Math.ceil(
+//             (savedCount - currentCount) / originalItems.length
+//         );
+
+//         for (let i = 0; i < setsNeeded; i++) {
+//             appendMore();
+//         }
+//     }
+
+//     /* 🔥 Wait for layout + images to settle, then restore exact position */
+//     setTimeout(() => {
+//         requestAnimationFrame(() => {
+//             requestAnimationFrame(() => {
+//                 window.scrollTo(0, parseInt(savedScrollY));
+//             });
+//         });
+//     }, 150);
+
+//     /* cleanup */
+//     sessionStorage.removeItem("scrollY");
+//     sessionStorage.removeItem("itemCount");
+// }
+//     /* -----------------------------
+//        INFINITE SCROLL
+//     ----------------------------- */
+//     let ticking = false;
+
+//     window.addEventListener("scroll", () => {
+//         if (ticking) return;
+
+//         ticking = true;
+
+//         requestAnimationFrame(() => {
+
+//             const scrollBottom = window.scrollY + window.innerHeight;
+//             const pageHeight = document.documentElement.scrollHeight;
+
+//             if (scrollBottom > pageHeight - 1200) {
+//                 appendMore();
+//             }
+
+//             ticking = false;
+//         });
+//     });
+
+//     /* -----------------------------
+//        IMAGE FADE-IN
+//     ----------------------------- */
+//     document.querySelectorAll(".scroll-item img").forEach(img => {
+
+//         if (img.complete) {
+//             img.classList.add("loaded");
+//         } else {
+//             img.addEventListener("load", () => {
+//                 img.classList.add("loaded");
+//             });
+//         }
+
+//     });
+
+// });
+
 
 /* -----------------------------
    FORCE MANUAL SCROLL RESTORE
 ----------------------------- */
 if ('scrollRestoration' in history) {
     history.scrollRestoration = "manual";
+}
+
+/* -----------------------------
+   HIDE PAGE DURING RESTORE (prevents flicker)
+----------------------------- */
+const savedScrollY = sessionStorage.getItem("scrollY");
+
+if (savedScrollY !== null) {
+    // Hide body instantly before first paint
+    document.documentElement.style.visibility = "hidden";
 }
 
 /* -----------------------------
@@ -1364,52 +1510,60 @@ window.addEventListener("pageshow", function () {
         isAdding = false;
     }
 
-   /* -----------------------------
-   SAVE EXACT SCROLL POSITION
------------------------------ */
-if (contactLink) {
-    contactLink.addEventListener("click", () => {
-
-        sessionStorage.setItem("scrollY", window.scrollY);
-        sessionStorage.setItem("itemCount", container.children.length);
-
-    });
-}
-
     /* -----------------------------
-   RESTORE EXACT SCROLL POSITION
------------------------------ */
-const savedScrollY = sessionStorage.getItem("scrollY");
-const savedCount = parseInt(sessionStorage.getItem("itemCount"));
-
-if (savedScrollY !== null) {
-
-    const currentCount = container.children.length;
-
-    /* rebuild infinite scroll BEFORE restoring */
-    if (savedCount > currentCount) {
-        const setsNeeded = Math.ceil(
-            (savedCount - currentCount) / originalItems.length
-        );
-
-        for (let i = 0; i < setsNeeded; i++) {
-            appendMore();
-        }
+       SAVE EXACT SCROLL POSITION
+    ----------------------------- */
+    if (contactLink) {
+        contactLink.addEventListener("click", () => {
+            sessionStorage.setItem("scrollY", window.scrollY);
+            sessionStorage.setItem("itemCount", container.children.length);
+        });
     }
 
-    /* 🔥 Wait for layout + images to settle, then restore exact position */
-    setTimeout(() => {
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                window.scrollTo(0, parseInt(savedScrollY));
-            });
-        });
-    }, 150);
+    /* -----------------------------
+       RESTORE EXACT SCROLL POSITION
+    ----------------------------- */
+    const savedCount = parseInt(sessionStorage.getItem("itemCount"));
 
-    /* cleanup */
-    sessionStorage.removeItem("scrollY");
-    sessionStorage.removeItem("itemCount");
-}
+    if (savedScrollY !== null) {
+
+        const currentCount = container.children.length;
+
+        /* rebuild infinite scroll BEFORE restoring */
+        if (savedCount > currentCount) {
+            const setsNeeded = Math.ceil(
+                (savedCount - currentCount) / originalItems.length
+            );
+
+            for (let i = 0; i < setsNeeded; i++) {
+                appendMore();
+            }
+        }
+
+        /* Restore position, then reveal page */
+        const restorePosition = () => {
+            window.scrollTo(0, parseInt(savedScrollY));
+        };
+
+        // Try multiple times as images/layout settle
+        setTimeout(restorePosition, 0);
+        setTimeout(restorePosition, 100);
+        setTimeout(restorePosition, 300);
+
+        // Reveal the page after the final attempt
+        setTimeout(() => {
+            document.documentElement.style.visibility = "visible";
+        }, 350);
+
+        /* cleanup */
+        sessionStorage.removeItem("scrollY");
+        sessionStorage.removeItem("itemCount");
+
+    } else {
+        // No saved position — make sure page is visible
+        document.documentElement.style.visibility = "visible";
+    }
+
     /* -----------------------------
        INFINITE SCROLL
     ----------------------------- */
