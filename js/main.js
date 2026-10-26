@@ -1648,7 +1648,9 @@
 /* =========================================
    STABLE SCROLL RESTORATION
    Homepage <-> Contact page
-   (hidden-until-restored, no flicker)
+   - saves continuously (reliable on mobile)
+   - restores by artwork + offset (robust to layout shifts)
+   - page stays hidden until restored (no flicker)
 ========================================= */
 
 if ("scrollRestoration" in history) {
@@ -1659,7 +1661,6 @@ if ("scrollRestoration" in history) {
     const root = document.documentElement;
     const container = document.querySelector(".scroll-container");
 
-    /* Show the page again (the <head> snippet hides it while restoring) */
     function reveal() {
         root.classList.remove("restoring");
     }
@@ -1674,29 +1675,64 @@ if ("scrollRestoration" in history) {
 
     const contactLink = document.querySelector(".top-right a");
 
+    // Y_KEY and COUNT_KEY are also read by the <head> snippet in index.html
     const Y_KEY = "homepage_saved_y";
     const COUNT_KEY = "homepage_saved_count";
+    const ANCHOR_KEY = "homepage_saved_anchor";
 
     const originalItems = Array.from(container.children);
 
     let adding = false;
     let ticking = false;
     let restoring = false;
+    let ready = false;      // saving only allowed after restore has finished
+
+    const docTop = el => el.getBoundingClientRect().top + window.scrollY;
 
     /* -------------------------------------
        SAVE SCROLL POSITION
     ------------------------------------- */
 
     function savePosition() {
-        sessionStorage.setItem(Y_KEY, String(window.scrollY));
-        sessionStorage.setItem(COUNT_KEY, String(container.children.length));
+        if (!ready || restoring) return;
+
+        try {
+            const y = window.scrollY;
+            const items = Array.from(container.children);
+
+            let idx = 0;
+            for (let i = 0; i < items.length; i++) {
+                if (docTop(items[i]) <= y + 1) idx = i;
+                else break;
+            }
+            const offset = items[idx] ? y - docTop(items[idx]) : 0;
+
+            sessionStorage.setItem(Y_KEY, String(y));
+            sessionStorage.setItem(COUNT_KEY, String(items.length));
+            sessionStorage.setItem(ANCHOR_KEY, JSON.stringify({ idx, offset }));
+        } catch (e) {}
     }
 
+    // Save on every way of leaving the page
     if (contactLink) {
         contactLink.addEventListener("click", savePosition);
+        contactLink.addEventListener("pointerdown", savePosition);
+        contactLink.addEventListener("touchstart", savePosition, { passive: true });
     }
-
     window.addEventListener("pagehide", savePosition);
+    document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "hidden") savePosition();
+    });
+
+    // Also save while scrolling (mobile browsers don't always fire pagehide)
+    let saveTimer = null;
+    window.addEventListener("scroll", () => {
+        if (saveTimer) return;
+        saveTimer = setTimeout(() => {
+            saveTimer = null;
+            savePosition();
+        }, 150);
+    }, { passive: true });
 
     /* -------------------------------------
        INFINITE SCROLL
@@ -1734,15 +1770,14 @@ if ("scrollRestoration" in history) {
 
     /* -------------------------------------
        WAIT UNTIL IMAGES HAVE THEIR REAL SIZE
-       (prevents layout shifts while scrolling)
     ------------------------------------- */
 
     function waitForImages(timeoutMs) {
         const imgs = Array.from(container.querySelectorAll("img"));
 
         const loads = imgs.map(img => {
-            img.loading = "eager";          // don't wait for lazy loading
-            img.classList.add("loaded");    // no fade-in while restoring
+            img.loading = "eager";
+            img.classList.add("loaded");
 
             if (img.complete && img.naturalWidth > 0) return Promise.resolve();
 
@@ -1759,17 +1794,23 @@ if ("scrollRestoration" in history) {
     }
 
     const nextFrame = () => new Promise(r => requestAnimationFrame(() => r()));
+    const jump = top => window.scrollTo({ top, left: 0, behavior: "instant" });
 
     /* -------------------------------------
        RESTORE SCROLL POSITION
     ------------------------------------- */
 
     async function restorePosition() {
-        const rawY = sessionStorage.getItem(Y_KEY);
-        const targetY = Number(rawY);
-        const savedCount = Number(sessionStorage.getItem(COUNT_KEY));
+        let savedY = 0, savedCount = 0, anchor = null;
 
-        if (rawY === null || !Number.isFinite(targetY) || targetY <= 0) {
+        try {
+            savedY = Number(sessionStorage.getItem(Y_KEY));
+            savedCount = Number(sessionStorage.getItem(COUNT_KEY));
+            anchor = JSON.parse(sessionStorage.getItem(ANCHOR_KEY) || "null");
+        } catch (e) {}
+
+        if (!Number.isFinite(savedY) || savedY <= 0) {
+            ready = true;
             reveal();
             return;
         }
@@ -1790,24 +1831,34 @@ if ("scrollRestoration" in history) {
         // Let every image get its real height BEFORE scrolling
         await waitForImages(3500);
 
-        // Jump once (page is still hidden), then re-confirm after layout settles
-        window.scrollTo(0, targetY);
+        const computeTarget = () => {
+            const items = Array.from(container.children);
+            if (anchor && items[anchor.idx]) {
+                return docTop(items[anchor.idx]) + (Number(anchor.offset) || 0);
+            }
+            return savedY;
+        };
+
+        // Jump (page is still hidden), then re-confirm after layout settles
+        jump(computeTarget());
         await nextFrame();
-        window.scrollTo(0, targetY);
+        jump(computeTarget());
         await nextFrame();
-        window.scrollTo(0, targetY);
+        jump(computeTarget());
 
         restoring = false;
+        ready = true;
         reveal();
     }
 
-    // Normal navigation (contact -> work link / back button): restore now,
-    // while the page is still hidden
     restorePosition();
 
-    // Back/forward cache: the page is already intact, just make sure it's visible
+    // Back/forward cache: page is intact, just make sure it's visible
     window.addEventListener("pageshow", (e) => {
-        if (e.persisted) reveal();
+        if (e.persisted) {
+            ready = true;
+            reveal();
+        }
     });
 
     /* -------------------------------------
