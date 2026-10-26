@@ -22,6 +22,21 @@
 
 <link rel="stylesheet" href="css/style.css">
 
+<!-- =========================================
+     SCROLL RESTORE: hide page until position is restored (no flicker)
+     ========================================= -->
+<style>
+    html.restoring body { visibility: hidden; }
+    html.restoring .scroll-item img { transition: none !important; opacity: 1 !important; }
+</style>
+<script>
+    try {
+        if (Number(sessionStorage.getItem("homepage_saved_y")) > 0) {
+            document.documentElement.classList.add("restoring");
+        }
+    } catch (e) {}
+</script>
+
 <!-- Google Fonts (since they are free) -->
 <!-- <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800&family=Gabarito:wght@700&display=swap" rel="stylesheet"> -->
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Gabarito:wght@300;400;500;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/> 
@@ -107,7 +122,14 @@
            <p>acrylic, acrylic marker, colored pencil <br class="mobile-material-break">on plasterboard</p>
             <p>125 x 90 x 1.5 cm</p>
         </div>
-        <img src="assets/images/homepage/1-gottliches-Timing-trifft-Matcha-Latte.webp" alt="Artwork 7" loading="lazy">    
+        <img src="assets/images/homepage/optimized/1-gottliches-Timing-trifft-Matcha-Latte-1200.webp"
+         srcset="assets/images/homepage/optimized/1-gottliches-Timing-trifft-Matcha-Latte-800.webp 800w,
+                 assets/images/homepage/optimized/1-gottliches-Timing-trifft-Matcha-Latte-1200.webp 1200w,
+                 assets/images/homepage/optimized/1-gottliches-Timing-trifft-Matcha-Latte-1600.webp 1600w,
+                 assets/images/homepage/optimized/1-gottliches-Timing-trifft-Matcha-Latte-2000.webp 2000w"
+         sizes="(max-width: 1100px) 100vw, calc(97vh * 1.0000)"
+         width="3000" height="3000"
+         alt="göttliches Timing trifft Matcha Latte" loading="eager" fetchpriority="high" decoding="async">
     </a>
 
     <!-- Artwork 8: capricorn sun, libra moon, virgo rising (FIXED) -->
@@ -118,7 +140,14 @@
            <p>acrylic, acrylic marker, colored pencil <br class="mobile-material-break">on plasterboard</p>
             <p>125 x 90 x 1.5 cm</p>
         </div>
-        <img src="assets/images/homepage/2-capricorn-sun-libra-moon-virgo-rising.webp" alt="Artwork 8" loading="lazy">    
+        <img src="assets/images/homepage/optimized/2-capricorn-sun-libra-moon-virgo-rising-1200.webp"
+         srcset="assets/images/homepage/optimized/2-capricorn-sun-libra-moon-virgo-rising-800.webp 800w,
+                 assets/images/homepage/optimized/2-capricorn-sun-libra-moon-virgo-rising-1200.webp 1200w,
+                 assets/images/homepage/optimized/2-capricorn-sun-libra-moon-virgo-rising-1600.webp 1600w,
+                 assets/images/homepage/optimized/2-capricorn-sun-libra-moon-virgo-rising-2000.webp 2000w"
+         sizes="(max-width: 1100px) 100vw, calc(97vh * 1.0000)"
+         width="2560" height="2560"
+         alt="capricorn sun, libra moon, virgo rising" loading="lazy" decoding="async">
     </a>
 
     <!-- Artwork 9: rot ist die Liebe  -->
@@ -128,7 +157,14 @@
             <p>acrylic, acrylic marker, pigment liner, fineliner, brush pen, colored pencil <br class="mobile-material-break">on cardboard</p>
             <p>70 x 100 cm</p>
         </div>
-        <img src="assets/images/homepage/3-rot-ist-die-Liebe.webp" alt="Artwork 9" loading="lazy">   
+        <img src="assets/images/homepage/optimized/3-rot-ist-die-Liebe-1200.webp"
+         srcset="assets/images/homepage/optimized/3-rot-ist-die-Liebe-800.webp 800w,
+                 assets/images/homepage/optimized/3-rot-ist-die-Liebe-1200.webp 1200w,
+                 assets/images/homepage/optimized/3-rot-ist-die-Liebe-1600.webp 1600w,
+                 assets/images/homepage/optimized/3-rot-ist-die-Liebe-2000.webp 2000w"
+         sizes="(max-width: 1100px) 100vw, calc(97vh * 1.0000)"
+         width="2400" height="2400"
+         alt="rot ist die Liebe" loading="lazy" decoding="async">
     </a>
 
     <!--<a class="scroll-item">
@@ -157,10 +193,17 @@
               <p>acrylic marker  <br class="mobile-material-break">on black cardboard</p>
             <p>42  x 59 cm</p>
         </div>
-        <img src="assets/images/homepage/4-making-waves.webp" alt="Artwork 12" loading="lazy">    
+        <img src="assets/images/homepage/optimized/4-making-waves-1200.webp"
+         srcset="assets/images/homepage/optimized/4-making-waves-800.webp 800w,
+                 assets/images/homepage/optimized/4-making-waves-1200.webp 1200w,
+                 assets/images/homepage/optimized/4-making-waves-1600.webp 1600w,
+                 assets/images/homepage/optimized/4-making-waves-2000.webp 2000w"
+         sizes="(max-width: 1100px) 100vw, calc(97vh * 1.0000)"
+         width="2560" height="2560"
+         alt="making waves" loading="lazy" decoding="async">
     </a>
 
-    <!-- Artwork 12: making waves -->
+    <!-- Artwork 12: zu mir -->
     <a class="scroll-item">
         <div class="art-info" data-art="zu-mir">
             <h2>zu mir</h2>
@@ -168,7 +211,14 @@
              <p>acrylic, acrylic marker,  brush  pen <br class="mobile-material-break">on cardboard</p>
             <p>70 x 100 cm</p>
         </div>
-        <img src="assets/images/homepage/5-zu-mir.webp" alt="Artwork 12" loading="lazy">    
+        <img src="assets/images/homepage/optimized/5-zu-mir-1200.webp"
+         srcset="assets/images/homepage/optimized/5-zu-mir-800.webp 800w,
+                 assets/images/homepage/optimized/5-zu-mir-1200.webp 1200w,
+                 assets/images/homepage/optimized/5-zu-mir-1600.webp 1600w,
+                 assets/images/homepage/optimized/5-zu-mir-2000.webp 2000w"
+         sizes="(max-width: 1100px) 100vw, calc(97vh * 1.0000)"
+         width="2560" height="2560"
+         alt="zu mir" loading="lazy" decoding="async">
     </a>
 
     <!--<a class="scroll-item">
@@ -228,10 +278,17 @@
 
             <p>100 x 80 x 4.5 cm</p>
         </div>
-        <img src="assets/images/homepage/6-may-you-be-protected-by-all-the-God-there-is.webp" alt="Artwork 18" loading="lazy">    
+        <img src="assets/images/homepage/optimized/6-may-you-be-protected-by-all-the-God-there-is-1200.webp"
+         srcset="assets/images/homepage/optimized/6-may-you-be-protected-by-all-the-God-there-is-800.webp 800w,
+                 assets/images/homepage/optimized/6-may-you-be-protected-by-all-the-God-there-is-1200.webp 1200w,
+                 assets/images/homepage/optimized/6-may-you-be-protected-by-all-the-God-there-is-1600.webp 1600w,
+                 assets/images/homepage/optimized/6-may-you-be-protected-by-all-the-God-there-is-2000.webp 2000w"
+         sizes="(max-width: 1100px) 100vw, calc(97vh * 1.0000)"
+         width="2560" height="2560"
+         alt="may you be protected by all the God there is" loading="lazy" decoding="async">
     </a>
 
-    <!-- Artwork 18: may you be protected by all the God there is (FIXED) -->
+    <!-- Nova -->
     <a class="scroll-item">
         <div class="art-info">
             <h2>Nova</h2>
@@ -239,7 +296,14 @@
             <p>acrylic, acrylic marker, pigment liner <br class="mobile-material-break">on cardboard</p>
             <p>100 x 62 cm</p>
         </div>
-        <img src="assets/images/homepage/7-Nova.webp" alt="Artwork 18" loading="lazy">    
+        <img src="assets/images/homepage/optimized/7-Nova-1200.webp"
+         srcset="assets/images/homepage/optimized/7-Nova-800.webp 800w,
+                 assets/images/homepage/optimized/7-Nova-1200.webp 1200w,
+                 assets/images/homepage/optimized/7-Nova-1600.webp 1600w,
+                 assets/images/homepage/optimized/7-Nova-2000.webp 2000w"
+         sizes="(max-width: 1100px) 100vw, calc(97vh * 1.0000)"
+         width="2560" height="2560"
+         alt="Nova" loading="lazy" decoding="async">
     </a>
     <!-- 8. Sehen klärt wo Gedanken trüben vs. noisy bubblegum -->
 <a class="scroll-item">
@@ -256,9 +320,16 @@
         <p>acrylic, acrylic marker, brush pen <br class="mobile-material-break">on cotton canvas</p>
         <p>100 x 100 x 3.8 cm</p>
     </div>
-    <img src="assets/images/homepage/8-Sehen-klart-wo-Gedanken-truben-vs-noisy-bubblegum.webp" alt="Artwork 8" loading="lazy">
+    <img src="assets/images/homepage/optimized/8-Sehen-klart-wo-Gedanken-truben-vs-noisy-bubblegum-1200.webp"
+         srcset="assets/images/homepage/optimized/8-Sehen-klart-wo-Gedanken-truben-vs-noisy-bubblegum-800.webp 800w,
+                 assets/images/homepage/optimized/8-Sehen-klart-wo-Gedanken-truben-vs-noisy-bubblegum-1200.webp 1200w,
+                 assets/images/homepage/optimized/8-Sehen-klart-wo-Gedanken-truben-vs-noisy-bubblegum-1600.webp 1600w,
+                 assets/images/homepage/optimized/8-Sehen-klart-wo-Gedanken-truben-vs-noisy-bubblegum-2000.webp 2000w"
+         sizes="(max-width: 1100px) 100vw, calc(97vh * 1.0000)"
+         width="2560" height="2560"
+         alt="Sehen klärt wo Gedanken trüben vs. noisy bubblegum" loading="lazy" decoding="async">
 </a>
-    <!-- Artwork 18: may you be protected by all the God there is (FIXED) -->
+    <!-- Aiolos' Atem -->
     <a class="scroll-item">
         <div class="art-info">
             <h2>Aiolos' Atem</h2>
@@ -266,7 +337,14 @@
             <p>acrylic, acrylic marker, brush pen <br class="mobile-material-break">on plasterboard</p>
             <p>48 × 48 × 1.5 cm</p>
         </div>
-        <img src="assets/images/homepage/Aiolos-Atem.webp" alt="Artwork 18" loading="lazy">    
+        <img src="assets/images/homepage/optimized/Aiolos-Atem-1200.webp"
+         srcset="assets/images/homepage/optimized/Aiolos-Atem-800.webp 800w,
+                 assets/images/homepage/optimized/Aiolos-Atem-1200.webp 1200w,
+                 assets/images/homepage/optimized/Aiolos-Atem-1600.webp 1600w,
+                 assets/images/homepage/optimized/Aiolos-Atem-2000.webp 2000w"
+         sizes="(max-width: 1100px) 100vw, calc(97vh * 1.0000)"
+         width="2200" height="2200"
+         alt="Aiolos' Atem" loading="lazy" decoding="async">
     </a>
 
    
@@ -348,4 +426,4 @@
 
 
 
-<!--5. zu mir, nova, Sehen klärt wo Gedanken trüben vs. noisy bubblegum, Aiolos' Atem(.) when-thoughts-cloud-vision-and-visionclearsthoughts-upscaled & Sehen klärt wo Gedanken trüben vs. noisy bubblegum -->
+<!--5. zu mir, nova, Sehen klärt wo Gedanken trüben vs. noisy bubblegum, Aiolos' Atem(.) when-thoughts-cloud-vision-and-visionclearsthoughts-upscaled & Sehen klärt wo Gedanken trüben vs. noisy bubblegum -->

@@ -785,7 +785,7 @@ object-fit:contain;
     
     /* Remove any <br> in these paragraphs */
     .art-info[data-art="madre-ayahuasca"] p:first-of-type br,
-    .art-info[data-art="making-waves"] p:first-of-type br,
+    /* .art-info[data-art="making-waves"] p:first-of-type br, */
     .art-info[data-art="mutterwunde"] p:first-of-type br,
     .art-info[data-art="weise-instanz"] p:first-of-type br,
     .art-info[data-art="lesson-softening"] p:first-of-type br,

@@ -1452,29 +1452,225 @@
 
 
 
+
+//mobile updated one 26th oct
+
+// /* =========================================
+//    STABLE SCROLL RESTORATION
+//    Homepage <-> Contact page
+// ========================================= */
+
+// if ("scrollRestoration" in history) {
+//     history.scrollRestoration = "manual";
+// }
+
+
+
+// /* =========================================
+//    HOMEPAGE SCROLL RESTORATION
+//    Desktop + Mobile
+// ========================================= */
+
+// (() => {
+//     if ("scrollRestoration" in history) {
+//         history.scrollRestoration = "manual";
+//     }
+
+//     const container = document.querySelector(".scroll-container");
+//     if (!container) return;
+
+//     const contactLink = document.querySelector(".top-right a");
+
+//     const Y_KEY = "homepage_saved_y";
+//     const COUNT_KEY = "homepage_saved_count";
+
+//     const originalItems = Array.from(container.children);
+
+//     let adding = false;
+//     let ticking = false;
+//     let restoring = false;
+
+//     /* -------------------------------------
+//        SAVE SCROLL POSITION
+//     ------------------------------------- */
+
+//     function savePosition() {
+//         sessionStorage.setItem(Y_KEY, String(window.scrollY));
+//         sessionStorage.setItem(
+//             COUNT_KEY,
+//             String(container.children.length)
+//         );
+//     }
+
+//     if (contactLink) {
+//         contactLink.addEventListener("click", savePosition);
+//     }
+
+//     // Save again immediately before leaving the homepage.
+//     window.addEventListener("pagehide", savePosition);
+
+//     /* -------------------------------------
+//        INFINITE SCROLL
+//     ------------------------------------- */
+
+//     function appendMore() {
+//         if (adding || originalItems.length === 0) return;
+
+//         adding = true;
+
+//         const fragment = document.createDocumentFragment();
+
+//         originalItems.forEach(item => {
+//             const clone = item.cloneNode(true);
+
+//             clone.querySelectorAll("img").forEach(img => {
+//                 img.classList.remove("loaded");
+
+//                 const markLoaded = () => img.classList.add("loaded");
+
+//                 if (img.complete) {
+//                     markLoaded();
+//                 } else {
+//                     img.addEventListener("load", markLoaded, {
+//                         once: true
+//                     });
+
+//                     img.addEventListener("error", markLoaded, {
+//                         once: true
+//                     });
+//                 }
+//             });
+
+//             fragment.appendChild(clone);
+//         });
+
+//         container.appendChild(fragment);
+//         adding = false;
+//     }
+
+//     /* -------------------------------------
+//        RESTORE SCROLL POSITION
+//     ------------------------------------- */
+
+//     function restorePosition() {
+//         const rawY = sessionStorage.getItem(Y_KEY);
+//         if (rawY === null) return;
+
+//         const targetY = Number(rawY);
+//         const savedCount = Number(sessionStorage.getItem(COUNT_KEY));
+
+//         if (!Number.isFinite(targetY)) return;
+
+//         restoring = true;
+
+//         // Rebuild enough items to reach the previous position.
+//         if (Number.isFinite(savedCount)) {
+//             let safety = 0;
+
+//             while (
+//                 container.children.length < savedCount &&
+//                 safety < 100
+//             ) {
+//                 const before = container.children.length;
+//                 appendMore();
+//                 safety++;
+
+//                 if (container.children.length === before) break;
+//             }
+//         }
+
+//         let attempts = 0;
+
+//         function applyPosition() {
+//             window.scrollTo(0, targetY);
+//             attempts++;
+
+//             // Keep correcting while mobile layout settles.
+//             if (attempts < 12) {
+//                 requestAnimationFrame(applyPosition);
+//             } else {
+//                 restoring = false;
+//             }
+//         }
+
+//         requestAnimationFrame(() => {
+//             requestAnimationFrame(applyPosition);
+//         });
+//     }
+
+//     window.addEventListener("pageshow", restorePosition);
+
+//     /* -------------------------------------
+//        INFINITE SCROLL LISTENER
+//     ------------------------------------- */
+
+//     window.addEventListener("scroll", () => {
+//         if (ticking || restoring) return;
+
+//         ticking = true;
+
+//         requestAnimationFrame(() => {
+//             const bottom = window.scrollY + window.innerHeight;
+//             const height = document.documentElement.scrollHeight;
+
+//             if (bottom > height - 1200) {
+//                 appendMore();
+//             }
+
+//             ticking = false;
+//         });
+//     }, { passive: true });
+
+//     /* -------------------------------------
+//        IMAGE FADE-IN
+//     ------------------------------------- */
+
+//     function prepareImages() {
+//         container.querySelectorAll("img").forEach(img => {
+//             if (img.complete) {
+//                 img.classList.add("loaded");
+//             } else {
+//                 img.addEventListener("load", () => {
+//                     img.classList.add("loaded");
+//                 }, { once: true });
+
+//                 img.addEventListener("error", () => {
+//                     img.classList.add("loaded");
+//                 }, { once: true });
+//             }
+//         });
+//     }
+
+//     prepareImages();
+// })();
+
+
 /* =========================================
    STABLE SCROLL RESTORATION
    Homepage <-> Contact page
+   (hidden-until-restored, no flicker)
 ========================================= */
 
 if ("scrollRestoration" in history) {
     history.scrollRestoration = "manual";
 }
 
-
-
-/* =========================================
-   HOMEPAGE SCROLL RESTORATION
-   Desktop + Mobile
-========================================= */
-
 (() => {
-    if ("scrollRestoration" in history) {
-        history.scrollRestoration = "manual";
+    const root = document.documentElement;
+    const container = document.querySelector(".scroll-container");
+
+    /* Show the page again (the <head> snippet hides it while restoring) */
+    function reveal() {
+        root.classList.remove("restoring");
     }
 
-    const container = document.querySelector(".scroll-container");
-    if (!container) return;
+    // Failsafe: never leave the page hidden
+    setTimeout(reveal, 4500);
+
+    if (!container) {
+        reveal();
+        return;
+    }
 
     const contactLink = document.querySelector(".top-right a");
 
@@ -1493,17 +1689,13 @@ if ("scrollRestoration" in history) {
 
     function savePosition() {
         sessionStorage.setItem(Y_KEY, String(window.scrollY));
-        sessionStorage.setItem(
-            COUNT_KEY,
-            String(container.children.length)
-        );
+        sessionStorage.setItem(COUNT_KEY, String(container.children.length));
     }
 
     if (contactLink) {
         contactLink.addEventListener("click", savePosition);
     }
 
-    // Save again immediately before leaving the homepage.
     window.addEventListener("pagehide", savePosition);
 
     /* -------------------------------------
@@ -1528,13 +1720,8 @@ if ("scrollRestoration" in history) {
                 if (img.complete) {
                     markLoaded();
                 } else {
-                    img.addEventListener("load", markLoaded, {
-                        once: true
-                    });
-
-                    img.addEventListener("error", markLoaded, {
-                        once: true
-                    });
+                    img.addEventListener("load", markLoaded, { once: true });
+                    img.addEventListener("error", markLoaded, { once: true });
                 }
             });
 
@@ -1546,56 +1733,82 @@ if ("scrollRestoration" in history) {
     }
 
     /* -------------------------------------
+       WAIT UNTIL IMAGES HAVE THEIR REAL SIZE
+       (prevents layout shifts while scrolling)
+    ------------------------------------- */
+
+    function waitForImages(timeoutMs) {
+        const imgs = Array.from(container.querySelectorAll("img"));
+
+        const loads = imgs.map(img => {
+            img.loading = "eager";          // don't wait for lazy loading
+            img.classList.add("loaded");    // no fade-in while restoring
+
+            if (img.complete && img.naturalWidth > 0) return Promise.resolve();
+
+            return new Promise(resolve => {
+                img.addEventListener("load", resolve, { once: true });
+                img.addEventListener("error", resolve, { once: true });
+            });
+        });
+
+        return Promise.race([
+            Promise.all(loads),
+            new Promise(resolve => setTimeout(resolve, timeoutMs))
+        ]);
+    }
+
+    const nextFrame = () => new Promise(r => requestAnimationFrame(() => r()));
+
+    /* -------------------------------------
        RESTORE SCROLL POSITION
     ------------------------------------- */
 
-    function restorePosition() {
+    async function restorePosition() {
         const rawY = sessionStorage.getItem(Y_KEY);
-        if (rawY === null) return;
-
         const targetY = Number(rawY);
         const savedCount = Number(sessionStorage.getItem(COUNT_KEY));
 
-        if (!Number.isFinite(targetY)) return;
+        if (rawY === null || !Number.isFinite(targetY) || targetY <= 0) {
+            reveal();
+            return;
+        }
 
         restoring = true;
 
-        // Rebuild enough items to reach the previous position.
+        // Rebuild enough items to reach the previous position
         if (Number.isFinite(savedCount)) {
             let safety = 0;
-
-            while (
-                container.children.length < savedCount &&
-                safety < 100
-            ) {
+            while (container.children.length < savedCount && safety < 100) {
                 const before = container.children.length;
                 appendMore();
                 safety++;
-
                 if (container.children.length === before) break;
             }
         }
 
-        let attempts = 0;
+        // Let every image get its real height BEFORE scrolling
+        await waitForImages(3500);
 
-        function applyPosition() {
-            window.scrollTo(0, targetY);
-            attempts++;
+        // Jump once (page is still hidden), then re-confirm after layout settles
+        window.scrollTo(0, targetY);
+        await nextFrame();
+        window.scrollTo(0, targetY);
+        await nextFrame();
+        window.scrollTo(0, targetY);
 
-            // Keep correcting while mobile layout settles.
-            if (attempts < 12) {
-                requestAnimationFrame(applyPosition);
-            } else {
-                restoring = false;
-            }
-        }
-
-        requestAnimationFrame(() => {
-            requestAnimationFrame(applyPosition);
-        });
+        restoring = false;
+        reveal();
     }
 
-    window.addEventListener("pageshow", restorePosition);
+    // Normal navigation (contact -> work link / back button): restore now,
+    // while the page is still hidden
+    restorePosition();
+
+    // Back/forward cache: the page is already intact, just make sure it's visible
+    window.addEventListener("pageshow", (e) => {
+        if (e.persisted) reveal();
+    });
 
     /* -------------------------------------
        INFINITE SCROLL LISTENER
@@ -1627,13 +1840,8 @@ if ("scrollRestoration" in history) {
             if (img.complete) {
                 img.classList.add("loaded");
             } else {
-                img.addEventListener("load", () => {
-                    img.classList.add("loaded");
-                }, { once: true });
-
-                img.addEventListener("error", () => {
-                    img.classList.add("loaded");
-                }, { once: true });
+                img.addEventListener("load", () => img.classList.add("loaded"), { once: true });
+                img.addEventListener("error", () => img.classList.add("loaded"), { once: true });
             }
         });
     }
