@@ -1826,7 +1826,14 @@ if ("scrollRestoration" in history) {
     }
 
     const nextFrame = () => new Promise(r => requestAnimationFrame(() => r()));
-    const jump = top => window.scrollTo({ top, left: 0, behavior: "instant" });
+    const jump = top => {
+        // Several methods on purpose: iOS WebKit ignores some of them at times
+        try { window.scrollTo({ top, left: 0, behavior: "instant" }); }
+        catch (e) { window.scrollTo(0, top); }
+        const se = document.scrollingElement || document.documentElement;
+        if (Math.abs(se.scrollTop - top) > 2) se.scrollTop = top;
+        if (Math.abs(window.scrollY - top) > 2) window.scrollTo(0, top);
+    };
 
     /* -------------------------------------
        RESTORE SCROLL POSITION
@@ -1900,7 +1907,7 @@ if ("scrollRestoration" in history) {
         ["touchstart", "wheel", "keydown", "mousedown"].forEach(ev =>
             window.addEventListener(ev, stop, { once: true, passive: true }));
 
-        const holdUntil = Date.now() + 2500;
+        const holdUntil = Date.now() + 4000;  // iOS can reset the scroll late
         const holder = setInterval(() => {
             if (userMoved || Date.now() > holdUntil) {
                 clearInterval(holder);
