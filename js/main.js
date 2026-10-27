@@ -1652,67 +1652,91 @@
    - restores by artwork + offset (robust to layout shifts)
    - page stays hidden until restored (no flicker)
 ========================================= */
-
+ 
 if ("scrollRestoration" in history) {
     history.scrollRestoration = "manual";
 }
-
+ 
 (() => {
     const root = document.documentElement;
     const container = document.querySelector(".scroll-container");
-
+ 
     function reveal() {
         root.classList.remove("restoring");
     }
-
+ 
     // Failsafe: never leave the page hidden
     setTimeout(reveal, 4500);
-
+ 
+    /* ---------- DEBUG PANEL ----------
+       Open  yoursite/index.html?debug  once on the phone to turn it on.
+       Open  index.html?nodebug  to turn it off again. */
+    try {
+        if (location.search.indexOf("nodebug") !== -1) sessionStorage.removeItem("dbg");
+        else if (location.search.indexOf("debug") !== -1) sessionStorage.setItem("dbg", "1");
+    } catch (e) {}
+    let DEBUG = false;
+    try { DEBUG = sessionStorage.getItem("dbg") === "1"; } catch (e) {}
+    let dbgBox = null;
+    const t0 = Date.now();
+    function dbg(msg) {
+        if (!DEBUG) return;
+        if (!dbgBox) {
+            dbgBox = document.createElement("div");
+            dbgBox.style.cssText = "position:fixed;left:0;right:0;bottom:0;z-index:99999;" +
+                "background:rgba(0,0,0,.85);color:#0f0;font:11px/1.35 monospace;padding:6px 8px;" +
+                "max-height:45vh;overflow:auto;pointer-events:none;white-space:pre-wrap;visibility:visible";
+            document.body.appendChild(dbgBox);
+        }
+        dbgBox.textContent += "[" + (Date.now() - t0) + "ms] " + msg + "\n";
+    }
+ 
     if (!container) {
         reveal();
         return;
     }
-
+ 
     const contactLink = document.querySelector(".top-right a");
-
+ 
     // Y_KEY and COUNT_KEY are also read by the <head> snippet in index.html
     const Y_KEY = "homepage_saved_y";
     const COUNT_KEY = "homepage_saved_count";
     const ANCHOR_KEY = "homepage_saved_anchor";
-
+ 
     const originalItems = Array.from(container.children);
-
+ 
     let adding = false;
     let ticking = false;
     let restoring = false;
     let ready = false;      // saving only allowed after restore has finished
-
+ 
     const docTop = el => el.getBoundingClientRect().top + window.scrollY;
-
+ 
     /* -------------------------------------
        SAVE SCROLL POSITION
     ------------------------------------- */
-
+ 
     function savePosition() {
         if (!ready || restoring) return;
-
+ 
         try {
             const y = window.scrollY;
             const items = Array.from(container.children);
-
+ 
             let idx = 0;
             for (let i = 0; i < items.length; i++) {
                 if (docTop(items[i]) <= y + 1) idx = i;
                 else break;
             }
             const offset = items[idx] ? y - docTop(items[idx]) : 0;
-
+ 
             sessionStorage.setItem(Y_KEY, String(y));
             sessionStorage.setItem(COUNT_KEY, String(items.length));
             sessionStorage.setItem(ANCHOR_KEY, JSON.stringify({ idx, offset }));
+            sessionStorage.setItem("dbg_lastsave", "y=" + Math.round(y) + " idx=" + idx + " items=" + items.length + " at " + new Date().toLocaleTimeString());
         } catch (e) {}
     }
-
+ 
     // Save on every way of leaving the page
     if (contactLink) {
         contactLink.addEventListener("click", savePosition);
@@ -1723,7 +1747,7 @@ if ("scrollRestoration" in history) {
     document.addEventListener("visibilitychange", () => {
         if (document.visibilityState === "hidden") savePosition();
     });
-
+ 
     // Also save while scrolling (mobile browsers don't always fire pagehide)
     let saveTimer = null;
     window.addEventListener("scroll", () => {
@@ -1733,26 +1757,26 @@ if ("scrollRestoration" in history) {
             savePosition();
         }, 150);
     }, { passive: true });
-
+ 
     /* -------------------------------------
        INFINITE SCROLL
     ------------------------------------- */
-
+ 
     function appendMore() {
         if (adding || originalItems.length === 0) return;
-
+ 
         adding = true;
-
+ 
         const fragment = document.createDocumentFragment();
-
+ 
         originalItems.forEach(item => {
             const clone = item.cloneNode(true);
-
+ 
             clone.querySelectorAll("img").forEach(img => {
                 img.classList.remove("loaded");
-
+ 
                 const markLoaded = () => img.classList.add("loaded");
-
+ 
                 if (img.complete) {
                     markLoaded();
                 } else {
@@ -1760,63 +1784,69 @@ if ("scrollRestoration" in history) {
                     img.addEventListener("error", markLoaded, { once: true });
                 }
             });
-
+ 
             fragment.appendChild(clone);
         });
-
+ 
         container.appendChild(fragment);
         adding = false;
     }
-
+ 
     /* -------------------------------------
        WAIT UNTIL IMAGES HAVE THEIR REAL SIZE
     ------------------------------------- */
-
+ 
     function waitForImages(timeoutMs) {
         const imgs = Array.from(container.querySelectorAll("img"));
-
+ 
         const loads = imgs.map(img => {
             img.loading = "eager";
             img.classList.add("loaded");
-
+ 
             if (img.complete && img.naturalWidth > 0) return Promise.resolve();
-
+ 
             return new Promise(resolve => {
                 img.addEventListener("load", resolve, { once: true });
                 img.addEventListener("error", resolve, { once: true });
             });
         });
-
+ 
         return Promise.race([
             Promise.all(loads),
             new Promise(resolve => setTimeout(resolve, timeoutMs))
         ]);
     }
-
+ 
     const nextFrame = () => new Promise(r => requestAnimationFrame(() => r()));
     const jump = top => window.scrollTo({ top, left: 0, behavior: "instant" });
-
+ 
     /* -------------------------------------
        RESTORE SCROLL POSITION
     ------------------------------------- */
-
+ 
     async function restorePosition() {
         let savedY = 0, savedCount = 0, anchor = null;
-
+ 
         try {
             savedY = Number(sessionStorage.getItem(Y_KEY));
             savedCount = Number(sessionStorage.getItem(COUNT_KEY));
             anchor = JSON.parse(sessionStorage.getItem(ANCHOR_KEY) || "null");
         } catch (e) {}
-
+ 
+        let lastSave = "";
+        try { lastSave = sessionStorage.getItem("dbg_lastsave") || "none"; } catch (e) {}
+        dbg("LOAD savedY=" + savedY + " count=" + savedCount + " anchor=" + JSON.stringify(anchor));
+        dbg("last save: " + lastSave);
+ 
         if (!Number.isFinite(savedY) || savedY <= 0) {
+            dbg("nothing to restore (savedY<=0) -> showing top");
             ready = true;
             reveal();
             return;
         }
-
+ 
         restoring = true;
-
+ 
         // Rebuild enough items to reach the previous position
         if (Number.isFinite(savedCount)) {
             let safety = 0;
@@ -1827,10 +1857,10 @@ if ("scrollRestoration" in history) {
                 if (container.children.length === before) break;
             }
         }
-
+ 
         // Let every image get its real height BEFORE scrolling
         await waitForImages(3500);
-
+ 
         const computeTarget = () => {
             const items = Array.from(container.children);
             if (anchor && items[anchor.idx]) {
@@ -1838,21 +1868,48 @@ if ("scrollRestoration" in history) {
             }
             return savedY;
         };
-
+ 
+        dbg("images ready, items=" + container.children.length + " docHeight=" + document.documentElement.scrollHeight);
+ 
         // Jump (page is still hidden), then re-confirm after layout settles
         jump(computeTarget());
         await nextFrame();
         jump(computeTarget());
         await nextFrame();
         jump(computeTarget());
-
+        dbg("jumped to " + Math.round(computeTarget()) + ", scrollY now " + Math.round(window.scrollY));
+ 
         restoring = false;
         ready = true;
         reveal();
+ 
+        /* HOLD: for 2.5s keep the position if the browser resets it by itself.
+           Stops immediately when the visitor touches / scrolls. */
+        let userMoved = false;
+        const stop = () => { userMoved = true; };
+        ["touchstart", "wheel", "keydown", "mousedown"].forEach(ev =>
+            window.addEventListener(ev, stop, { once: true, passive: true }));
+ 
+        const holdUntil = Date.now() + 2500;
+        const holder = setInterval(() => {
+            if (userMoved || Date.now() > holdUntil) {
+                clearInterval(holder);
+                return;
+            }
+            const target = computeTarget();
+            if (Math.abs(window.scrollY - target) > 3) {
+                dbg("HOLD: scrollY=" + Math.round(window.scrollY) + " drifted -> back to " + Math.round(target));
+                jump(target);
+            }
+        }, 50);
+ 
+        [300, 1000, 2500].forEach(ms => setTimeout(() => {
+            dbg("+" + ms + "ms after reveal: scrollY=" + Math.round(window.scrollY) + (userMoved ? " (user moved)" : ""));
+        }, ms));
     }
-
+ 
     restorePosition();
-
+ 
     // Back/forward cache: page is intact, just make sure it's visible
     window.addEventListener("pageshow", (e) => {
         if (e.persisted) {
@@ -1860,32 +1917,32 @@ if ("scrollRestoration" in history) {
             reveal();
         }
     });
-
+ 
     /* -------------------------------------
        INFINITE SCROLL LISTENER
     ------------------------------------- */
-
+ 
     window.addEventListener("scroll", () => {
         if (ticking || restoring) return;
-
+ 
         ticking = true;
-
+ 
         requestAnimationFrame(() => {
             const bottom = window.scrollY + window.innerHeight;
             const height = document.documentElement.scrollHeight;
-
+ 
             if (bottom > height - 1200) {
                 appendMore();
             }
-
+ 
             ticking = false;
         });
     }, { passive: true });
-
+ 
     /* -------------------------------------
        IMAGE FADE-IN
     ------------------------------------- */
-
+ 
     function prepareImages() {
         container.querySelectorAll("img").forEach(img => {
             if (img.complete) {
@@ -1896,6 +1953,6 @@ if ("scrollRestoration" in history) {
             }
         });
     }
-
+ 
     prepareImages();
 })();
