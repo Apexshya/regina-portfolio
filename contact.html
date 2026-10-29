@@ -32,9 +32,14 @@
             --page-margin: 40px;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-        html, body {
+        html,
+        body {
             width: 100%;
             min-height: 100%;
             background: var(--bg);
@@ -83,9 +88,13 @@
             transform: none !important;
         }
 
-        .top-right a:hover { opacity: 0.6; }
+        .top-right a:hover {
+            opacity: 0.6;
+        }
 
-        .top-left { display: none !important; }
+        .top-left {
+            display: none !important;
+        }
 
         /* CONTACT CONTAINER */
         .contact-container {
@@ -207,7 +216,9 @@
             transition: opacity 0.2s ease;
         }
 
-        .contact-links a:hover { opacity: 0.55; }
+        .contact-links a:hover {
+            opacity: 0.55;
+        }
 
         .legal-links {
             flex-direction: row !important;
@@ -236,7 +247,9 @@
             transition: opacity 0.2s ease;
         }
 
-        .legal-links a:hover { opacity: 0.55; }
+        .legal-links a:hover {
+            opacity: 0.55;
+        }
 
         .legal-links span {
             margin: 0 8px !important;
@@ -246,24 +259,47 @@
 
         /* TABLET */
         @media (max-width: 1100px) {
-            :root { --page-margin: 30px; }
+            :root {
+                --page-margin: 30px;
+            }
 
-            .top-right { top: 20px !important; right: 30px !important; font-size: 11pt !important; }
-            .top-right a { font-size: 11pt !important; }
-            .contact-name { font-size: 21px !important; }
-            .contact-tagline { font-size: 19px !important; }
+            .top-right {
+                top: 20px !important;
+                right: 30px !important;
+                font-size: 11pt !important;
+            }
+
+            .top-right a {
+                font-size: 11pt !important;
+            }
+
+            .contact-name {
+                font-size: 21px !important;
+            }
+
+            .contact-tagline {
+                font-size: 19px !important;
+            }
         }
 
         /* =====================================================
-           MOBILE  — matches the work page proportions
-           (titles 20px Playfair 800, text 12pt Gabarito 500,
-           20px side margin)
+           MOBILE — matches work page proportions
         ===================================================== */
         @media (max-width: 768px) {
-            :root { --page-margin: 20px; }
+            :root {
+                --page-margin: 20px;
+            }
 
-            .top-right { top: 20px !important; right: 20px !important; font-size: 11pt !important; }
-            .top-right a { font-size: 11pt !important; font-weight: 700 !important; }
+            .top-right {
+                top: 20px !important;
+                right: 20px !important;
+                font-size: 11pt !important;
+            }
+
+            .top-right a {
+                font-size: 11pt !important;
+                font-weight: 700 !important;
+            }
 
             .contact-container {
                 left: var(--page-margin) !important;
@@ -289,112 +325,81 @@
                 line-height: 1.15 !important;
             }
 
-            /* Sentences: same as "materials" lines on the work page */
-           /* .contact-inquiry-german {
-    width: 100% !important;
-    max-width: 100% !important;
-    font-size: 12pt !important;
-    line-height: 1.5 !important;
-    font-weight: 600 !important;
-    letter-spacing: normal !important;
-    word-spacing: normal !important;
-    white-space: normal !important;
-    overflow-wrap: break-word !important;
-    word-break: normal !important;
-    hyphens: none !important;
-    text-align: left !important;
-    text-align-last: left !important;
-    transform: none !important;
-}
+            /* German sentence — 12pt, weight 600 (thick) */
+            .contact-inquiry-german {
+                display: block !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                min-width: 0 !important;
+                box-sizing: border-box !important;
+                font-size: 12pt !important;
+                line-height: 1.5 !important;
+                font-weight: 600 !important;
+                letter-spacing: normal !important;
+                word-spacing: normal !important;
+                white-space: normal !important;
+                overflow-wrap: anywhere !important;
+                word-break: normal !important;
+                hyphens: auto !important;
+                text-align: justify !important;
+                text-align-last: left !important;
+                transform: none !important;
+            }
 
-.contact-inquiry-english {
-    width: 100% !important;
-    max-width: 100% !important;
-    font-size: 12pt !important;
-    line-height: 1.5 !important;
-    font-weight: 500 !important;
-    letter-spacing: normal !important;
-    word-spacing: normal !important;
-    white-space: normal !important;
-    overflow-wrap: break-word !important;
-    word-break: normal !important;
-    hyphens: none !important;
-    text-align: left !important;
-    text-align-last: left !important;
-    transform: none !important;
-    
-} */
- /* German contact inquiry */
-.contact-inquiry-german {
-    display: block !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    box-sizing: border-box !important;
-    font-size: 12pt !important;
-    line-height: 1.5 !important;
-    font-weight: 600 !important;
-    letter-spacing: normal !important;
-    word-spacing: normal !important;
-    white-space: normal !important;
-    overflow-wrap: anywhere !important;
-    word-break: normal !important;
-    hyphens: auto !important;
-    text-align: justify !important;
-    text-align-last: left !important;
-    transform: none !important;
-}
+            /* English sentence — 12pt, weight 400 (lighter) */
+            .contact-inquiry-english {
+                display: block !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                min-width: 0 !important;
+                box-sizing: border-box !important;
+                font-size: 12pt !important;
+                line-height: 1.5 !important;
+                font-weight: 400 !important;
+                letter-spacing: normal !important;
+                word-spacing: normal !important;
+                white-space: normal !important;
+                overflow-wrap: anywhere !important;
+                word-break: normal !important;
+                hyphens: auto !important;
+                text-align: justify !important;
+                text-align-last: left !important;
+                transform: none !important;
+            }
 
-/* English contact inquiry */
-.contact-inquiry-english {
-    display: block !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    box-sizing: border-box !important;
-    font-size: 12pt !important;
-    line-height: 1.5 !important;
-    font-weight: 500 !important;
-    letter-spacing: normal !important;
-    word-spacing: normal !important;
-    white-space: normal !important;
-    overflow-wrap: anywhere !important;
-    word-break: normal !important;
-    hyphens: auto !important;
-    text-align: justify !important;
-    text-align-last: left !important;
-    transform: none !important;
-}
+            .contact-inquiry-german {
+                margin: 32px 0 12px 0 !important;
+            }
 
-/* Prevent parent containers from forcing horizontal overflow */
-.contact-inquiry-german,
-.contact-inquiry-english {
-    min-width: 0 !important;
-}
+            .contact-inquiry-english {
+                margin: 0 0 28px 0 !important;
+            }
 
-            .contact-inquiry-german { margin: 32px 0 12px 0 !important; }
-            .contact-inquiry-english { margin: 0 0 28px 0 !important; }
-
-            /* Email + phone: same as materials lines */
-            .contact-links { gap: 4px !important; margin-bottom: 44px !important; }
+            /* Email + phone — 12pt, weight 600 (same as German) */
+            .contact-links {
+                gap: 4px !important;
+                margin-bottom: 44px !important;
+            }
 
             .contact-links a {
                 font-size: 12pt !important;
                 line-height: 1.5 !important;
-                font-weight: 500 !important;
+                font-weight: 600 !important;
             }
 
-            /* Legal: width is set by script to end exactly under the phone number */
+            /* Legal */
             .legal-links {
                 display: flex !important;
                 justify-content: space-between !important;
                 font-size: 8pt !important;
             }
-            .legal-links span { margin: 0 !important; }
 
-            /* OPTIONAL: text block centred above the legal line
-               (enabled via CENTER_MOBILE_TEXT in the script) */
-            html.center-mobile-text .contact-container {
+            .legal-links span {
+                margin: 0 !important;
+            }
+
+
+            /* html.center-mobile-text .contact-container {
                 top: 0 !important;
                 justify-content: flex-start !important;
             }
@@ -404,11 +409,43 @@
                 flex-direction: column;
                 justify-content: center;
                 align-items: flex-start;
-                padding-top: 50px; /* keeps clear of "work" link */
+                padding-top: 60px;
+                padding-bottom: 60px;
             }
             html.center-mobile-text .contact-inquiry-german { margin-top: 28px !important; }
-            html.center-mobile-text .contact-links { margin-bottom: 0 !important; }
-            html.center-mobile-text .legal-links { margin-top: 30px !important; }
+            html.center-mobile-text .contact-links { margin-bottom: 0 !important; } */
+            /* html.center-mobile-text .legal-links { margin-top: 30px !important; } */
+
+            /* Center the text block above legal line on mobile */
+            html.center-mobile-text .contact-container {
+                top: 0 !important;
+                bottom: 0 !important;
+                justify-content: flex-start !important;
+            }
+
+            html.center-mobile-text .contact-body {
+                flex: 1 1 auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+                padding-top: 60px;
+                padding-bottom: 60px;
+            }
+
+            html.center-mobile-text .contact-inquiry-german {
+                margin-top: 28px !important;
+            }
+
+            html.center-mobile-text .contact-links {
+                margin-bottom: 0 !important;
+            }
+
+            html.center-mobile-text .legal-links {
+                position: absolute !important;
+                bottom: var(--page-margin) !important;
+                /* left: var(--page-margin) !important; */
+            }
         }
     </style>
 </head>
@@ -433,12 +470,14 @@
             </p>
 
             <p class="contact-inquiry-english">
-                For inquiries about available art works, commissions, or updates on new art pieces, feel free to message me.
+                For inquiries about available art works, commissions, or updates on new art pieces, feel free to message
+                me.
             </p>
 
             <div class="contact-links">
                 <a href="mailto:info@reginafroehlich.com">info@reginafroehlich.com</a>
-                <a class="phone-link" href="https://wa.me/4917622598767" target="_blank" rel="noopener noreferrer">+49 176 22598767</a>
+                <a class="phone-link" href="https://wa.me/4917622598767" target="_blank" rel="noopener noreferrer">+49
+                    176 22598767</a>
             </div>
 
         </div>
@@ -453,10 +492,9 @@
 
     <script>
         /* =====================================================
-           SWITCH: set to true to centre the text block above
-           the legal line on mobile (step 2 of your request)
+           Center the text block above the legal line on mobile
         ===================================================== */
-        const CENTER_MOBILE_TEXT = false;
+        const CENTER_MOBILE_TEXT = true;
 
         if (CENTER_MOBILE_TEXT) {
             document.documentElement.classList.add('center-mobile-text');
@@ -474,8 +512,7 @@
             tagline.style.removeProperty('font-size');
 
             if (isMobile()) {
-                /* Mobile: name stays 20px (no stretching); the tagline is
-                   resized so its last letter ends under the name's last letter */
+                /* Mobile: tagline resized so its last letter ends under the name's last letter */
                 const nW = name.getBoundingClientRect().width;
                 const tW = tagline.getBoundingClientRect().width;
                 if (!nW || !tW) return;
@@ -537,4 +574,5 @@
     </script>
 
 </body>
+
 </html>
