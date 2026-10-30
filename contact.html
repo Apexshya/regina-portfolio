@@ -8,19 +8,14 @@
     <title>Regina Fröhlich | Visual Artist</title>
     <meta name="description" content="Original abstract paintings and mixed-media works">
 
-    <!-- FAVICON -->
     <link rel="icon" type="image/png" sizes="512x512" href="assets/favicon/Favicon-512x512.png">
     <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon/Favicon-512x512.png">
     <link rel="apple-touch-icon" href="assets/favicon/Favicon-512x512.png">
-
-    <!-- FALLBACK SVG FAVICON -->
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' fill='%23ffffff'/></svg>">
 
-    <!-- MAIN STYLESHEET -->
     <link rel="stylesheet" href="css/style.css">
 
-    <!-- GOOGLE FONTS -->
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Gabarito:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
@@ -32,14 +27,9 @@
             --page-margin: 40px;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        html,
-        body {
+        html, body {
             width: 100%;
             min-height: 100%;
             background: var(--bg);
@@ -51,7 +41,6 @@
             font-family: 'Gabarito', sans-serif;
         }
 
-        /* TOP-RIGHT NAVIGATION */
         .top-right {
             position: fixed !important;
             top: 30px !important;
@@ -88,15 +77,10 @@
             transform: none !important;
         }
 
-        .top-right a:hover {
-            opacity: 0.6;
-        }
+        .top-right a:hover { opacity: 0.6; }
 
-        .top-left {
-            display: none !important;
-        }
+        .top-left { display: none !important; }
 
-        /* CONTACT CONTAINER */
         .contact-container {
             position: fixed !important;
             left: var(--page-margin) !important;
@@ -115,7 +99,6 @@
             text-align: left !important;
         }
 
-        /* wrapper around everything except the legal line */
         .contact-body {
             display: block;
             width: 100%;
@@ -216,9 +199,7 @@
             transition: opacity 0.2s ease;
         }
 
-        .contact-links a:hover {
-            opacity: 0.55;
-        }
+        .contact-links a:hover { opacity: 0.55; }
 
         .legal-links {
             flex-direction: row !important;
@@ -247,9 +228,7 @@
             transition: opacity 0.2s ease;
         }
 
-        .legal-links a:hover {
-            opacity: 0.55;
-        }
+        .legal-links a:hover { opacity: 0.55; }
 
         .legal-links span {
             margin: 0 8px !important;
@@ -259,47 +238,21 @@
 
         /* TABLET */
         @media (max-width: 1100px) {
-            :root {
-                --page-margin: 30px;
-            }
-
-            .top-right {
-                top: 20px !important;
-                right: 30px !important;
-                font-size: 11pt !important;
-            }
-
-            .top-right a {
-                font-size: 11pt !important;
-            }
-
-            .contact-name {
-                font-size: 21px !important;
-            }
-
-            .contact-tagline {
-                font-size: 19px !important;
-            }
+            :root { --page-margin: 30px; }
+            .top-right { top: 20px !important; right: 30px !important; font-size: 11pt !important; }
+            .top-right a { font-size: 11pt !important; }
+            .contact-name { font-size: 21px !important; }
+            .contact-tagline { font-size: 19px !important; }
         }
 
         /* =====================================================
-           MOBILE — matches work page proportions
+           MOBILE — matches desktop spacing
         ===================================================== */
         @media (max-width: 768px) {
-            :root {
-                --page-margin: 20px;
-            }
+            :root { --page-margin: 20px; }
 
-            .top-right {
-                top: 20px !important;
-                right: 20px !important;
-                font-size: 11pt !important;
-            }
-
-            .top-right a {
-                font-size: 11pt !important;
-                font-weight: 700 !important;
-            }
+            .top-right { top: 20px !important; right: 20px !important; font-size: 11pt !important; }
+            .top-right a { font-size: 11pt !important; font-weight: 700 !important; }
 
             .contact-container {
                 left: var(--page-margin) !important;
@@ -308,7 +261,6 @@
                 max-width: calc(100vw - (var(--page-margin) * 2)) !important;
             }
 
-            /* Name: same as work-page titles, NO stretching */
             .contact-name {
                 font-size: 20px !important;
                 font-weight: 800 !important;
@@ -318,14 +270,12 @@
                 transform: none !important;
             }
 
-            /* Tagline: same size as titles */
             .contact-tagline {
                 font-size: 20px !important;
                 font-weight: 400 !important;
                 line-height: 1.15 !important;
             }
 
-            /* German sentence — 12pt, weight 600 (thick) */
             .contact-inquiry-german {
                 display: block !important;
                 width: 100% !important;
@@ -344,9 +294,10 @@
                 text-align: justify !important;
                 text-align-last: left !important;
                 transform: none !important;
+                /* Desktop spacing: 55px top, 10px bottom */
+                margin: 55px 0 10px 0 !important;
             }
 
-            /* English sentence — 12pt, weight 400 (lighter) */
             .contact-inquiry-english {
                 display: block !important;
                 width: 100% !important;
@@ -365,20 +316,13 @@
                 text-align: justify !important;
                 text-align-last: left !important;
                 transform: none !important;
+                /* Desktop spacing: 40px bottom */
+                margin: 0 0 40px 0 !important;
             }
 
-            .contact-inquiry-german {
-                margin: 32px 0 12px 0 !important;
-            }
-
-            .contact-inquiry-english {
-                margin: 0 0 28px 0 !important;
-            }
-
-            /* Email + phone — 12pt, weight 600 (same as German) */
             .contact-links {
-                gap: 4px !important;
-                margin-bottom: 44px !important;
+                gap: 3px !important;
+                margin-bottom: 55px !important;
             }
 
             .contact-links a {
@@ -387,64 +331,38 @@
                 font-weight: 600 !important;
             }
 
-            /* Legal */
+            /* Legal links — natural width, left aligned, close to text (desktop-like) */
             .legal-links {
                 display: flex !important;
-                justify-content: space-between !important;
+                justify-content: flex-start !important;
+                width: max-content !important;
                 font-size: 8pt !important;
-            }
-
-            .legal-links span {
                 margin: 0 !important;
             }
 
-
-            /* html.center-mobile-text .contact-container {
-                top: 0 !important;
-                justify-content: flex-start !important;
+            .legal-links span {
+                margin: 0 8px !important;
             }
-            html.center-mobile-text .contact-body {
-                flex: 1 1 auto;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: flex-start;
-                padding-top: 60px;
-                padding-bottom: 60px;
-            }
-            html.center-mobile-text .contact-inquiry-german { margin-top: 28px !important; }
-            html.center-mobile-text .contact-links { margin-bottom: 0 !important; } */
-            /* html.center-mobile-text .legal-links { margin-top: 30px !important; } */
 
-            /* Center the text block above legal line on mobile */
+            /* Center the entire text block (including legal links) on screen */
             html.center-mobile-text .contact-container {
                 top: 0 !important;
                 bottom: 0 !important;
-                justify-content: flex-start !important;
+                justify-content: center !important;
             }
 
             html.center-mobile-text .contact-body {
-                flex: 1 1 auto;
                 display: flex;
                 flex-direction: column;
-                justify-content: center;
+                justify-content: flex-start;
                 align-items: flex-start;
-                padding-top: 60px;
-                padding-bottom: 60px;
-            }
-
-            html.center-mobile-text .contact-inquiry-german {
-                margin-top: 28px !important;
-            }
-
-            html.center-mobile-text .contact-links {
-                margin-bottom: 0 !important;
+                flex: none;
+                width: 100%;
             }
 
             html.center-mobile-text .legal-links {
-                position: absolute !important;
-                bottom: var(--page-margin) !important;
-                /* left: var(--page-margin) !important; */
+                position: static !important;
+                margin-top: 0 !important;
             }
         }
     </style>
@@ -491,9 +409,7 @@
     </main>
 
     <script>
-        /* =====================================================
-           Center the text block above the legal line on mobile
-        ===================================================== */
+        /* Center the text block on mobile */
         const CENTER_MOBILE_TEXT = true;
 
         if (CENTER_MOBILE_TEXT) {
@@ -512,7 +428,6 @@
             tagline.style.removeProperty('font-size');
 
             if (isMobile()) {
-                /* Mobile: tagline resized so its last letter ends under the name's last letter */
                 const nW = name.getBoundingClientRect().width;
                 const tW = tagline.getBoundingClientRect().width;
                 if (!nW || !tW) return;
@@ -544,23 +459,9 @@
             german.style.setProperty('--german-inquiry-scale', englishWidth / germanWidth);
         }
 
-        /* MOBILE: legal line ends exactly where the phone number ends */
-        function alignLegal() {
-            const legal = document.querySelector('.legal-links');
-            const phone = document.querySelector('.phone-link');
-            if (!legal || !phone) return;
-
-            if (!isMobile()) {
-                legal.style.removeProperty('width');
-                return;
-            }
-            legal.style.setProperty('width', phone.getBoundingClientRect().width + 'px', 'important');
-        }
-
         function alignAll() {
             alignContactTitle();
             alignInquiryText();
-            alignLegal();
         }
 
         if (document.fonts && document.fonts.ready) {
@@ -574,5 +475,4 @@
     </script>
 
 </body>
-
 </html>
