@@ -8,14 +8,19 @@
     <title>Regina Fröhlich | Visual Artist</title>
     <meta name="description" content="Original abstract paintings and mixed-media works">
 
+    <!-- FAVICON -->
     <link rel="icon" type="image/png" sizes="512x512" href="assets/favicon/Favicon-512x512.png">
     <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon/Favicon-512x512.png">
     <link rel="apple-touch-icon" href="assets/favicon/Favicon-512x512.png">
+
+    <!-- FALLBACK SVG FAVICON -->
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' fill='%23ffffff'/></svg>">
 
+    <!-- MAIN STYLESHEET -->
     <link rel="stylesheet" href="css/style.css">
 
+    <!-- GOOGLE FONTS -->
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Gabarito:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
@@ -41,6 +46,7 @@
             font-family: 'Gabarito', sans-serif;
         }
 
+        /* TOP-RIGHT NAVIGATION */
         .top-right {
             position: fixed !important;
             top: 30px !important;
@@ -81,6 +87,7 @@
 
         .top-left { display: none !important; }
 
+        /* CONTACT CONTAINER */
         .contact-container {
             position: fixed !important;
             left: var(--page-margin) !important;
@@ -99,6 +106,7 @@
             text-align: left !important;
         }
 
+        /* wrapper around everything except the legal line */
         .contact-body {
             display: block;
             width: 100%;
@@ -239,6 +247,7 @@
         /* TABLET */
         @media (max-width: 1100px) {
             :root { --page-margin: 30px; }
+
             .top-right { top: 20px !important; right: 30px !important; font-size: 11pt !important; }
             .top-right a { font-size: 11pt !important; }
             .contact-name { font-size: 21px !important; }
@@ -246,21 +255,36 @@
         }
 
         /* =====================================================
-           MOBILE — matches desktop spacing
+           MOBILE  — matches the work page proportions
+           (titles 20px Playfair 800, text 12pt Gabarito 500,
+           20px side margin)
         ===================================================== */
         @media (max-width: 768px) {
-            :root { --page-margin: 20px; }
+            :root {
+                --page-margin: 20px;
+                --work-bottom: 38px;   /* bottom edge of the "work" link (tweak if needed) */
+                --gap-name: 34px;      /* name block  ->  German text   (keep equal to --gap-legal) */
+                --gap-links: 26px;     /* English text -> email / phone */
+                --gap-legal: 34px;     /* phone -> "Privacy Policy · Imprint" (keep equal to --gap-name) */
+            }
 
             .top-right { top: 20px !important; right: 20px !important; font-size: 11pt !important; }
             .top-right a { font-size: 11pt !important; font-weight: 700 !important; }
 
+            /* The whole text block (incl. legal line) is centred between
+               the bottom of "work" and the bottom of the screen, so
+               space(work -> name) = space(legal -> screen bottom). */
             .contact-container {
+                top: var(--work-bottom) !important;
+                bottom: 0 !important;
                 left: var(--page-margin) !important;
-                bottom: var(--page-margin) !important;
+                right: auto !important;
                 width: calc(100vw - (var(--page-margin) * 2)) !important;
                 max-width: calc(100vw - (var(--page-margin) * 2)) !important;
+                justify-content: center !important;
             }
 
+            /* Name: same as work-page titles, NO stretching */
             .contact-name {
                 font-size: 20px !important;
                 font-weight: 800 !important;
@@ -270,12 +294,14 @@
                 transform: none !important;
             }
 
+            /* Tagline: size is fitted by script so its last letter lines up with the name */
             .contact-tagline {
                 font-size: 20px !important;
                 font-weight: 400 !important;
                 line-height: 1.15 !important;
             }
 
+            /* German contact inquiry */
             .contact-inquiry-german {
                 display: block !important;
                 width: 100% !important;
@@ -294,10 +320,10 @@
                 text-align: justify !important;
                 text-align-last: left !important;
                 transform: none !important;
-                /* Desktop spacing: 55px top, 10px bottom */
-                margin: 55px 0 10px 0 !important;
+                margin: var(--gap-name) 0 12px 0 !important;
             }
 
+            /* English contact inquiry */
             .contact-inquiry-english {
                 display: block !important;
                 width: 100% !important;
@@ -306,7 +332,7 @@
                 box-sizing: border-box !important;
                 font-size: 12pt !important;
                 line-height: 1.5 !important;
-                font-weight: 400 !important;
+                font-weight: 500 !important;
                 letter-spacing: normal !important;
                 word-spacing: normal !important;
                 white-space: normal !important;
@@ -316,54 +342,26 @@
                 text-align: justify !important;
                 text-align-last: left !important;
                 transform: none !important;
-                /* Desktop spacing: 40px bottom */
-                margin: 0 0 40px 0 !important;
+                margin: 0 0 var(--gap-links) 0 !important;
             }
 
-            .contact-links {
-                gap: 3px !important;
-                margin-bottom: 55px !important;
-            }
+            /* Email + phone: same as materials lines on the work page */
+            .contact-links { gap: 4px !important; margin: 0 !important; }
 
             .contact-links a {
                 font-size: 12pt !important;
                 line-height: 1.5 !important;
-                font-weight: 600 !important;
+                font-weight: 500 !important;
             }
 
-            /* Legal links — natural width, left aligned, close to text (desktop-like) */
+            /* Legal: width set by script so it ends exactly under the phone number */
             .legal-links {
                 display: flex !important;
-                justify-content: flex-start !important;
-                width: max-content !important;
+                justify-content: space-between !important;
                 font-size: 8pt !important;
-                margin: 0 !important;
+                margin: var(--gap-legal) 0 0 0 !important;
             }
-
-            .legal-links span {
-                margin: 0 8px !important;
-            }
-
-            /* Center the entire text block (including legal links) on screen */
-            html.center-mobile-text .contact-container {
-                top: 0 !important;
-                bottom: 0 !important;
-                justify-content: center !important;
-            }
-
-            html.center-mobile-text .contact-body {
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-start;
-                align-items: flex-start;
-                flex: none;
-                width: 100%;
-            }
-
-            html.center-mobile-text .legal-links {
-                position: static !important;
-                margin-top: 0 !important;
-            }
+            .legal-links span { margin: 0 !important; }
         }
     </style>
 </head>
@@ -388,14 +386,12 @@
             </p>
 
             <p class="contact-inquiry-english">
-                For inquiries about available art works, commissions, or updates on new art pieces, feel free to message
-                me.
+                For inquiries about available art works, commissions, or updates on new art pieces, feel free to message me.
             </p>
 
             <div class="contact-links">
                 <a href="mailto:info@reginafroehlich.com">info@reginafroehlich.com</a>
-                <a class="phone-link" href="https://wa.me/4917622598767" target="_blank" rel="noopener noreferrer">+49
-                    176 22598767</a>
+                <a class="phone-link" href="https://wa.me/4917622598767" target="_blank" rel="noopener noreferrer">+49 176 22598767</a>
             </div>
 
         </div>
@@ -409,13 +405,6 @@
     </main>
 
     <script>
-        /* Center the text block on mobile */
-        const CENTER_MOBILE_TEXT = true;
-
-        if (CENTER_MOBILE_TEXT) {
-            document.documentElement.classList.add('center-mobile-text');
-        }
-
         const isMobile = () => window.innerWidth <= 768;
 
         /* Name width = tagline width (DESKTOP ONLY) */
@@ -428,6 +417,8 @@
             tagline.style.removeProperty('font-size');
 
             if (isMobile()) {
+                /* Mobile: name stays 20px (no stretching); the tagline is
+                   resized so its last letter ends under the name's last letter */
                 const nW = name.getBoundingClientRect().width;
                 const tW = tagline.getBoundingClientRect().width;
                 if (!nW || !tW) return;
@@ -459,9 +450,23 @@
             german.style.setProperty('--german-inquiry-scale', englishWidth / germanWidth);
         }
 
+        /* MOBILE: legal line ends exactly where the phone number ends */
+        function alignLegal() {
+            const legal = document.querySelector('.legal-links');
+            const phone = document.querySelector('.phone-link');
+            if (!legal || !phone) return;
+
+            if (!isMobile()) {
+                legal.style.removeProperty('width');
+                return;
+            }
+            legal.style.setProperty('width', phone.getBoundingClientRect().width + 'px', 'important');
+        }
+
         function alignAll() {
             alignContactTitle();
             alignInquiryText();
+            alignLegal();
         }
 
         if (document.fonts && document.fonts.ready) {
